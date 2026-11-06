@@ -1,0 +1,19 @@
+{
+  admin off
+  auto_https disable_redirects
+  default_sni {$GROUP_AGENT_HOST}
+  skip_install_trust
+}
+
+https://{$GROUP_AGENT_HOST}:18443 {
+  tls internal
+  encode gzip
+  header X-Content-Type-Options nosniff
+  header Referrer-Policy same-origin
+  reverse_proxy webhost:3001
+}
+
+https://{$GROUP_AGENT_HOST}:18444 {
+  tls internal
+  reverse_proxy relay:3000
+}

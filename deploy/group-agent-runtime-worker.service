@@ -1,0 +1,18 @@
+[Unit]
+Description=Group Agent bounded workspace provisioner
+After=docker.service network-online.target
+Requires=docker.service
+
+[Service]
+Type=simple
+WorkingDirectory=/mnt/group-agent/releases/current
+ExecStart=/usr/bin/python3 /mnt/group-agent/releases/current/scripts/runtime-worker.py
+Restart=always
+RestartSec=5
+MemoryMax=128M
+CPUQuota=20%
+UMask=0077
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

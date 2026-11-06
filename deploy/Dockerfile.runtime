@@ -1,0 +1,6 @@
+FROM node@sha256:173f125896c3b47ddf056734c7ea789d04595a6a08769a8f78e0df642781fb66
+# Native terminal shell discovery uses os.userInfo(); numeric --user alone
+# cannot supply its passwd entry. Keep the existing project UID and GID.
+RUN groupadd --gid 995 group-agent \
+    && useradd --uid 996 --gid 995 --home-dir /home/dsh --shell /bin/bash --no-create-home group-agent
+USER 996:995

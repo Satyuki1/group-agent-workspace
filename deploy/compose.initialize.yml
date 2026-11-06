@@ -1,0 +1,8 @@
+# Fresh PostgreSQL only: initdb needs an empty PGDATA, without a nested WAL mount.
+# Use together with compose.yml, start postgres only, then provision-fast-wal.py.
+# Never use this override against an already migrated database.
+services:
+  postgres:
+    volumes: !override
+      - /mnt/group-agent/data/postgres:/var/lib/postgresql/data
+      - ./postgres-init.sh:/docker-entrypoint-initdb.d/10-app.sh:ro

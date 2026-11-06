@@ -1,0 +1,5 @@
+{
+  "buzz": {"repository": "https://github.com/block/buzz.git", "commit": "49fcab3324549cba9043b661c4fd0acf0f980a03"},
+  "buzz-app": {"repository": "https://github.com/block/buzz-app.git", "commit": "0b2dfbf9889ea95873f175b216fbb0b5795f104e"},
+  "deepseek-harness": {"repository": "https://github.com/deepseek-ai/deepseek-harness.git", "commit": "8bd073392eef6f54e921a093b95076248eb08cbb"}
+}
