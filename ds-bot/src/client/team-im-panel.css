@@ -1,0 +1,13 @@
+.dsb-team-pane { position: fixed; inset: var(--dsh-frame-chrome-top, 0px) 0 0 auto; z-index: 24; background: var(--bt-main); color: var(--bt-ink); display: flex; flex-direction: column; min-width: 0; }
+.dsb-team-pane:has(.bt-settings-layer) { z-index: 59; }
+.dsb-team-pane[hidden] { display: none; }
+.dsb-team-content { flex: 1; min-height: 0; position: relative; }
+.bt-team-directory { width: 100%; }
+.bt-team-directory section { margin: 6px 0 10px; }
+.bt-team-directory .bt-team-directory-header { display: flex; align-items: center; justify-content: space-between; gap: 4px; padding-inline: 8px; }
+.bt-team-directory h2 { margin: 6px 0; font-size: 12px; font-weight: 600; color: var(--bt-ink-2); }
+.bt-team-directory .bt-round { width: 26px; height: 26px; }
+.bt-team-directory .bt-round svg { width: 15px; height: 15px; }
+.bt-team-directory .bt-row { min-height: 38px; padding-block: 5px; }
+.bt-team-directory .bt-team-unread { flex: none; border-radius: 8px; padding-inline: 5px; background: var(--bt-accent); color: white; font-size: 11px; line-height: 16px; }
+.dsb-team-pane .bt-panel.details { position: absolute; z-index: 28; }

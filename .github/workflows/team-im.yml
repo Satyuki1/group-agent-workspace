@@ -1,0 +1,66 @@
+name: Team IM
+on:
+  pull_request:
+    paths: ['team/**', 'app/ui/src/**', 'ds-bot/src/client/**', 'ds-bot/src/shared/**', '.github/workflows/team-im.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: team
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: team/package-lock.json
+      - run: npm ci
+      - run: npm run check && npm run build
+      - run: docker build -t dsbot-team-worker:test runner
+      - run: |
+          docker run --rm -d --name team-ci-db --network host -e POSTGRES_HOST_AUTH_METHOD=trust postgres:18 -c listen_addresses=127.0.0.1 -p 35432
+          for attempt in {1..30}; do
+            if docker exec team-ci-db pg_isready -p 35432; then break; fi
+            sleep 1
+          done
+      - run: xvfb-run -a npm test
+        env:
+          IM_TEST_DATABASE_URL: postgres://postgres@127.0.0.1:35432/postgres
+          IM_TEST_CHROME: /usr/bin/google-chrome
+          IM_TEST_ELECTRON: ./node_modules/electron/dist/electron
+          IM_TEST_WORKER_IMAGE: dsbot-team-worker:test
+          IM_TEST_DOCKER_HOST: 127.0.0.1
+          IM_TEST_DOCKER_NETWORK: host
+      - if: always()
+        run: docker rm -f team-ci-db
+  desktop:
+    strategy:
+      matrix:
+        include:
+          - { os: macos-latest, args: '--mac zip --arm64' }
+          - { os: windows-latest, args: '--win nsis --x64' }
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: team
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: team/package-lock.json
+      - run: npm ci
+      - run: npm run package -- ${{ matrix.args }} --publish never
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: team-im-${{ runner.os }}
+          path: |
+            team/release/*.zip
+            team/release/*.exe
