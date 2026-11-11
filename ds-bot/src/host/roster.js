@@ -614,8 +614,8 @@ export function install(rt) {
     }
   }
 
-  function checkMembers(members) {
-    if (members.length < 2) throw new Error('A group chat needs at least two Bots')
+  function checkMembers(members, teamImBinding) {
+    if (members.length < (teamImBinding ? 1 : 2)) throw new Error('A group chat needs at least two Bots')
     if (members.length > ROOM_MAX_MEMBERS) throw new Error(`A group chat holds at most ${ROOM_MAX_MEMBERS} Bots`)
     rt.checkNoPrivate(members)
   }
@@ -624,18 +624,18 @@ export function install(rt) {
   // member when it has one.
   const defaultAdmin = (members, createdBy) => (members.includes(createdBy) ? createdBy : members.find(rt.isMain) ?? null)
 
-  async function createRoom({ members: memberIds = [], name: roomName, notice, mode, admin, createdBy, section, sectionId } = {}) {
+  async function createRoom({ members: memberIds = [], name: roomName, notice, mode, admin, createdBy, section, sectionId, teamImBinding } = {}) {
     const members = [...new Set(memberIds)].filter(id => rt.botOf(id))
-    checkMembers(members)
+    checkMembers(members, teamImBinding)
     const custom = cleanRoomName(roomName ?? '')
     const adminId = admin !== undefined ? admin : defaultAdmin(members, createdBy)
     if (adminId !== null && !members.includes(adminId)) throw new Error('The admin must be a member of the group')
     if (mode !== undefined && !ROOM_MODES.includes(mode)) throw new Error(`Reply mode must be one of ${ROOM_MODES.join(', ')}`)
     if (section !== undefined || sectionId !== undefined) resolveSectionInput({ section, sectionId }, { allowCreate: false })
-    return holdName('room', custom, () => buildRoom({ members, custom, notice, mode, adminId, createdBy, section, sectionId }))
+    return holdName('room', custom, () => buildRoom({ members, custom, notice, mode, adminId, createdBy, section, sectionId, teamImBinding }))
   }
 
-  async function buildRoom({ members, custom, notice, mode, adminId, createdBy, section, sectionId }) {
+  async function buildRoom({ members, custom, notice, mode, adminId, createdBy, section, sectionId, teamImBinding }) {
     const title = custom || autoRoomName(members)
     // The group's own Session only relays; like a member's it moves to a fresh part
     // in the group's folder once the group has one (parts.js).
@@ -644,7 +644,7 @@ export function install(rt) {
       // A member deleted while the Session was made stays out, and the group is checked
       // again as it is written.
       const live = members.filter(member => rt.botOf(member))
-      checkMembers(live)
+      checkMembers(live, teamImBinding)
       const lead = adminId === null || live.includes(adminId) ? adminId : defaultAdmin(live, createdBy)
       const name = custom || autoRoomName(live)
       const resolvedSecId = resolveSectionInput({ section, sectionId })
@@ -654,6 +654,7 @@ export function install(rt) {
         ...(custom ? { named: true } : {}),
         ...(resolvedSecId ? { sectionId: resolvedSecId } : {}),
         members: live,
+        ...(teamImBinding ? { teamImBinding } : {}),
         admin: lead,
         mode: mode ?? 'admin',
         notice: cleanNotice(notice),

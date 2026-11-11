@@ -1,0 +1,144 @@
+/* Team-only controls. The shell, bubbles, settings and composer use DS Bot's styles. */
+.team-window, .team-main { height: 100%; }
+.team-main { overflow: hidden; }
+.team-brand { display: flex; align-items: center; gap: 8px; }
+.team-status {
+  position: absolute;
+  top: 46px;
+  right: 16px;
+  z-index: 9;
+  font-size: 12px;
+  color: var(--bt-ink-2);
+  pointer-events: none;
+}
+.team-status:empty { display: none; }
+.empty { margin: auto; padding: 24px; text-align: center; color: var(--bt-ink-2); }
+.welcome h1 { margin: 0; color: var(--bt-ink); font-size: 20px; font-weight: 600; }
+.welcome p { margin: 8px 0 16px; }
+.login { height: 100%; display: grid; place-items: center; padding: 16px; box-sizing: border-box; }
+.login-card, .team-dialog {
+  box-sizing: border-box;
+  width: min(420px, calc(100vw - 32px));
+  background: var(--bt-main);
+  color: var(--bt-ink);
+  border: 1px solid var(--bt-line-2);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: var(--bt-glass-shadow);
+}
+.login-card h1, .team-dialog h2, .details h2 { font-size: 17px; font-weight: 600; }
+.login-card h1 { margin: 24px 0 16px; }
+.team-dialog { max-height: min(680px, calc(100dvh - 32px)); overflow: auto; }
+.team-dialog::backdrop { background: rgba(0, 0, 0, .36); }
+.modal-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.modal-head h2 { margin: 0; }
+:is(.team-dialog, .details) h3, .admin h3 { margin: 18px 0 8px; font-size: 13px; }
+:is(.login-card, .team-dialog, .details, .admin) form { display: grid; gap: 10px; margin: 12px 0; }
+:is(.login-card, .team-dialog, .details, .admin, .team-appearance) label {
+  display: grid;
+  gap: 6px;
+  color: var(--bt-ink-2);
+  font-size: 13px;
+}
+:is(.login-card, .team-dialog, .details, .admin, .invite) :is(input:not([type=checkbox]), textarea, select) {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 36px;
+  border: 1px solid var(--bt-line-2);
+  border-radius: 8px;
+  padding: 7px 10px;
+  background: var(--bt-card);
+  color: var(--bt-ink);
+  font: inherit;
+}
+:is(.login-card, .team-dialog, .details, .admin, .settings-row, .banner, .approval, .quote, .chips, .run-state) button,
+button.quiet {
+  border: 0;
+  border-radius: 999px;
+  padding: 6px 12px;
+  background: var(--bt-hover);
+  color: inherit;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+:is(.login-card, .team-dialog, .details, .admin, .settings-row, .approval, .quote, .chips, .run-state) button:hover,
+button.quiet:hover { background: var(--bt-active); }
+:is(.login-card, .team-dialog, .admin) button.primary { min-height: 36px; background: var(--bt-accent); color: var(--bt-accent-ink, white); }
+button:disabled { cursor: default; }
+.error { color: var(--bt-danger); font-size: 13px; }
+.banner {
+  position: absolute;
+  z-index: 10;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: calc(100% - 32px);
+  background: var(--bt-card);
+  border: 1px solid var(--bt-line);
+  border-radius: 12px;
+  padding: 6px 8px 6px 12px;
+}
+.banner button { margin-left: 8px; }
+.bt-panel.details { padding: 16px; gap: 12px; overflow: auto; }
+@media (min-width: 1000px) { .team-window:has(>.details) .team-main { margin-right: 320px; } }
+@media (max-width: 480px) { .bt-panel.details { max-width: 100%; } }
+.person-row, .row-actions, .settings-row, .approval, .invite { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.person-row { flex-wrap: nowrap; padding: 6px 0; }
+.person-row > span:nth-child(2) { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.admin small, .directory small { display: block; color: var(--bt-ink-2); }
+:is(.team-dialog, .details, .admin) label.check { display: flex; align-items: center; gap: 8px; }
+.team-dialog button:is(.directory, .search-result) {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+  width: 100%;
+  border-radius: 8px;
+  background: transparent;
+  padding: 7px;
+}
+.team-dialog button:is(.directory, .search-result):hover { background: var(--bt-hover); }
+.team-dialog .search-result { flex-direction: column; align-items: flex-start; overflow-wrap: anywhere; }
+.team-dialog .search-form { display: flex; }
+.team-appearance { display: grid; gap: 12px; max-width: 320px; }
+.older { align-self: center; }
+.message.highlight { border-radius: 12px; background: var(--bt-accent-soft); }
+.message blockquote { margin: 4px 0; padding: 2px 8px; border-inline-start: 2px solid currentColor; font-size: 12px; opacity: .78; overflow-wrap: anywhere; }
+.message .file { width: fit-content; display: grid; gap: 4px; color: inherit; overflow-wrap: anywhere; }
+.message .file img { display: block; max-width: min(350px, 100%); max-height: 220px; object-fit: contain; border-radius: 8px; }
+.team-group-msg .bt-group-name { gap: 4px; }
+.team-group-msg .bt-group-time, .team-group-msg .bt-group-role { color: var(--bt-ink-2); font-size: 11px; font-weight: 400; }
+.team-reply { width: auto; align-self: flex-start; padding: 0 6px; font-size: 11px; color: var(--bt-ink-2); }
+.team-urow .team-reply { color: inherit; opacity: .7; }
+.run-state { display: block; color: var(--bt-ink-2); font-size: 12px; }
+.dsb-composer-wrap { position: relative; }
+.dsb-composer-tools .bt-round { width: 28px; height: 28px; background: transparent; border: 0; }
+.dsb-composer-tools .bt-round:hover { background: var(--bt-hover); }
+.team-upload { position: relative; }
+.team-upload input { position: absolute; inset: 0; width: 100%; opacity: 0; cursor: inherit; }
+.team-upload:focus-within { outline: 2px solid var(--bt-accent); }
+.team-upload svg { width: 16px; height: 16px; }
+.quote, .chips { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; color: var(--bt-ink-2); font-size: 12px; }
+.quote, .chips:not(:empty) { margin-bottom: 6px; }
+.bt-menu.mention-menu { position: absolute; inset: auto auto calc(100% + 6px) 0; z-index: 15; max-height: 240px; overflow: auto; }
+.team-workspace-links { display: grid; gap: 4px; margin: 12px 0; max-width: 320px; }
+.team-workspace-links :is(a,button) {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--bt-ink);
+  font: inherit;
+  font-size: 13px;
+  text-decoration: none;
+  text-align: left;
+  cursor: pointer;
+}
+.team-workspace-links :is(a,button):hover { background: var(--bt-hover); }
+
+.team-personal-request { position: absolute; z-index: 14; top: 52px; right: 12px; }

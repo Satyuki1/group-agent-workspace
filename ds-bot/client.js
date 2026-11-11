@@ -153,6 +153,9 @@ var JA = {
   "Back to chat": "チャットに戻る",
   "New…": "新規…",
   "New section": "新しいセクション",
+  "Team messages": "チームメッセージ",
+  "Contacts": "連絡先",
+  "Create team group chat": "チームのグループチャットを作成",
   "Rename section": "セクション名を変更",
   "Section color": "セクションの色",
   "Move section up": "セクションを上へ移動",
@@ -2424,6 +2427,9 @@ var KO = {
   "Back to chat": "대화로 돌아가기",
   "New…": "새로 만들기…",
   "New section": "새 섹션",
+  "Team messages": "팀 메시지",
+  "Contacts": "연락처",
+  "Create team group chat": "팀 그룹 채팅 만들기",
   "Rename section": "섹션 이름 변경",
   "Section color": "섹션 색상",
   "Move section up": "섹션 위로 이동",
@@ -4739,6 +4745,9 @@ var ES = {
   "Back to chat": "Volver al chat",
   "New…": "Nuevo…",
   "New section": "Nueva sección",
+  "Team messages": "Mensajes del equipo",
+  "Contacts": "Contactos",
+  "Create team group chat": "Crear chat de grupo del equipo",
   "Rename section": "Renombrar sección",
   "Section color": "Color de la sección",
   "Move section up": "Subir sección",
@@ -7053,6 +7062,9 @@ var FR = {
   "Back to chat": "Retour à la discussion",
   "New…": "Nouveau…",
   "New section": "Nouvelle section",
+  "Team messages": "Messages de l’équipe",
+  "Contacts": "Contacts",
+  "Create team group chat": "Créer un groupe d’équipe",
   "Rename section": "Renommer la section",
   "Section color": "Couleur de la section",
   "Move section up": "Monter la section",
@@ -9324,6 +9336,9 @@ var DE = {
   "Back to chat": "Zurück zum Chat",
   "New…": "Neu…",
   "New section": "Neuer Abschnitt",
+  "Team messages": "Teamnachrichten",
+  "Contacts": "Kontakte",
+  "Create team group chat": "Team-Gruppenchat erstellen",
   "Rename section": "Abschnitt umbenennen",
   "Section color": "Abschnittsfarbe",
   "Move section up": "Abschnitt nach oben",
@@ -11620,6 +11635,9 @@ var ZH = {
   "New chat": "新对话",
   "Back to chat": "返回对话",
   "New…": "新建",
+  "Team messages": "团队消息",
+  "Contacts": "通讯录",
+  "Create team group chat": "新建团队群聊",
   "New section": "新建分组",
   "Rename section": "重命名分组",
   "Section color": "分组颜色",
@@ -13664,8 +13682,8 @@ function bodyOf(def, paint, flat = false) {
     return "";
   }
 }
-var eyeMarkup = ([cx, cy, w, h62, tilt]) => `<g transform="translate(${cx} ${cy}) rotate(${tilt})"><rect class="bt-eye" x="${-w / 2}" y="${-h62 / 2}" width="${w}" height="${h62}" rx="${w / 2}"/></g>`;
-var happyEyeMarkup = ([cx, cy, w, h62, tilt]) => `<g transform="translate(${cx} ${cy}) rotate(${tilt})"><path class="bt-eye-happy" opacity="0" d="M${-w * 0.62} ${h62 * 0.14}Q0 ${-h62 * 0.42} ${w * 0.62} ${h62 * 0.14}" fill="none" stroke="#000" stroke-width="${w * 0.5}" stroke-linecap="round"/></g>`;
+var eyeMarkup = ([cx, cy, w, h63, tilt]) => `<g transform="translate(${cx} ${cy}) rotate(${tilt})"><rect class="bt-eye" x="${-w / 2}" y="${-h63 / 2}" width="${w}" height="${h63}" rx="${w / 2}"/></g>`;
+var happyEyeMarkup = ([cx, cy, w, h63, tilt]) => `<g transform="translate(${cx} ${cy}) rotate(${tilt})"><path class="bt-eye-happy" opacity="0" d="M${-w * 0.62} ${h63 * 0.14}Q0 ${-h63 * 0.42} ${w * 0.62} ${h63 * 0.14}" fill="none" stroke="#000" stroke-width="${w * 0.5}" stroke-linecap="round"/></g>`;
 var maskBox = (size) => `maskUnits="userSpaceOnUse" x="${-size}" y="${-size}" width="${size * 3}" height="${size * 3}"`;
 var holes = (def, eyes) => `<rect x="${-def.size}" y="${-def.size}" width="${def.size * 3}" height="${def.size * 3}" fill="#fff"/>${eyes}`;
 var MASK_ID = "%MASK%";
@@ -14495,12 +14513,12 @@ function liveSprings(apply2) {
     const dt = Math.min(0.5, Math.max(1e-3, (now - last) / 1e3));
     last = now;
     const steps = Math.ceil(dt * 240);
-    const h62 = dt / steps;
+    const h63 = dt / steps;
     let moving = false;
     for (const [key, value] of values) {
       for (let index = 0; index < steps; index += 1) {
-        value.v += (-value.k * (value.x - value.to) - value.c * value.v) * h62;
-        value.x += value.v * h62;
+        value.v += (-value.k * (value.x - value.to) - value.c * value.v) * h63;
+        value.x += value.v * h63;
       }
       if (Math.abs(value.x - value.to) < 0.05 && Math.abs(value.v) < 1) {
         value.x = value.to;
@@ -14708,7 +14726,7 @@ var LEGACY_THEMES = { grok: "mono" };
 function legacyKeys(key) {
   if (key === STORAGE.browsers) return LEGACY_BROWSER_KEYS;
   const name = key.slice(key.indexOf(":") + 1);
-  return LEGACY_PREFIXES.map((prefix) => `${prefix}${name}`);
+  return LEGACY_PREFIXES.map((prefix2) => `${prefix2}${name}`);
 }
 var migrateBrowsers = (storage) => {
   if (storage.getItem(STORAGE.browsers) !== null) {
@@ -22681,10 +22699,10 @@ async function avatarImage(file) {
   const canvas = document.createElement("canvas");
   canvas.width = side;
   canvas.height = side;
-  const context = canvas.getContext("2d");
-  context.imageSmoothingQuality = "high";
+  const context2 = canvas.getContext("2d");
+  context2.imageSmoothingQuality = "high";
   const crop = Math.min(bitmap.width, bitmap.height);
-  context.drawImage(bitmap, (bitmap.width - crop) / 2, (bitmap.height - crop) / 2, crop, crop, 0, 0, side, side);
+  context2.drawImage(bitmap, (bitmap.width - crop) / 2, (bitmap.height - crop) / 2, crop, crop, 0, 0, side, side);
   bitmap.close?.();
   for (const quality of [0.9, 0.75, 0.6]) {
     const url = canvas.toDataURL("image/webp", quality);
@@ -25893,7 +25911,7 @@ function AssistantCell({ node, groupPart, sessionId, openFile, fileMentions, use
   );
 }
 var activityParts = (line) => line.split("`").map((part, index) => index % 2 === 1 ? (0, import_react32.createElement)("code", { key: index }, part) : part);
-function EventLine({ prefix, bots, joiner = t("and"), onOpen, whole = false }) {
+function EventLine({ prefix: prefix2, bots, joiner = t("and"), onOpen, whole = false }) {
   if (whole && bots.length === 1) {
     return (0, import_react32.createElement)(
       "div",
@@ -25901,14 +25919,14 @@ function EventLine({ prefix, bots, joiner = t("and"), onOpen, whole = false }) {
       (0, import_react32.createElement)(
         "button",
         { type: "button", className: "bt-event-whole", title: bots[0].name, onClick: () => onOpen?.(bots[0]) },
-        (0, import_react32.createElement)("span", null, prefix),
+        (0, import_react32.createElement)("span", null, prefix2),
         (0, import_react32.createElement)(BotMark, { bot: bots[0], size: 16 }),
         (0, import_react32.createElement)("span", { className: "bt-event-name" }, bots[0].name)
       )
     );
   }
   const parts = [];
-  parts.push((0, import_react32.createElement)("span", { key: "p" }, prefix));
+  parts.push((0, import_react32.createElement)("span", { key: "p" }, prefix2));
   bots.forEach((bot, index) => {
     if (index > 0) parts.push((0, import_react32.createElement)("span", { key: `j${index}` }, joiner));
     parts.push((0, import_react32.createElement)(
@@ -25994,11 +26012,11 @@ function GroupMessage({ bot, text, texts: texts2 = [text], room: room2, roster, 
     (0, import_react32.createElement)(Bubbles, { texts: texts2, roster, selfId: bot.id, actions, sessionId: room2?.id, msgKey, useUi, lead: flat ? null : lead, whole })
   );
 }
-function GroupEvent({ prefix, room: room2, name, roster, actions }) {
+function GroupEvent({ prefix: prefix2, room: room2, name, roster, actions }) {
   return (0, import_react32.createElement)(
     "div",
     { className: "bt-event" },
-    (0, import_react32.createElement)("span", null, prefix),
+    (0, import_react32.createElement)("span", null, prefix2),
     room2 ? (0, import_react32.createElement)("button", { type: "button", onClick: () => actions.openSession(room2.id) }, (0, import_react32.createElement)(RoomAvatar, { room: room2, roster, size: 16 }), room2.name) : name ? (0, import_react32.createElement)("span", null, name) : null
   );
 }
@@ -26227,8 +26245,8 @@ function chatRow(row, key, { sessionId, selfId, roster, actions, useUi, onBtwDel
     case "event": {
       if (row.role === "report") return (0, import_react32.createElement)(GroupEvent, { key, prefix: t("Replies from"), room: roster.roomsById[row.roomId], name: t("a group chat"), roster, actions });
       const other = roster.byId[row.botId] ?? { id: row.botId, name: row.name ?? t("a Bot"), color: "gray" };
-      const prefix = { stopped: t("Stopped by"), reply: t("Reply from") }[row.role] ?? t("Message from");
-      return (0, import_react32.createElement)(EventLine, { key, prefix, bots: [other], onOpen: () => {
+      const prefix2 = { stopped: t("Stopped by"), reply: t("Reply from") }[row.role] ?? t("Message from");
+      return (0, import_react32.createElement)(EventLine, { key, prefix: prefix2, bots: [other], onOpen: () => {
         if (selfId && other.id) actions.openExchange(selfId, other.id);
       }, whole: true });
     }
@@ -27641,10 +27659,11 @@ var bootHint = () => {
   return last === void 0 ? t("The Bot team could not start. The engine’s startup output — its console, or the app’s startup error box — has the cause.") : t("The Bot team could not start. {error}. The engine’s startup output — its console, or the app’s startup error box — has the cause.", { error: last });
 };
 function TeamSidebar(props) {
-  const { wide, useRoster, useUi, useSessions, actions } = props;
+  const { wide, useRoster, useUi, useSessions, actions, teamControls } = props;
   const listRef = (0, import_react34.useRef)(null);
   const roster = useRoster((value) => value);
   const markedUnread = useUi((value) => value.unread);
+  const teamImOrigin = useUi((value) => value.teamImOrigin);
   const leftDrawer = useUi((value) => value.leftDrawer === true);
   const details = useUi((value) => value.details ?? null);
   const view = useUi((value) => value.view ?? "details");
@@ -27927,7 +27946,7 @@ function TeamSidebar(props) {
     { className: "bt-side-top" },
     (0, import_react34.createElement)("span", { className: "bt-brand" }, (0, import_react34.createElement)(BrandName)),
     (0, import_react34.createElement)(UpdateButton, { useUpdate: props.useUpdate, actions }),
-    (0, import_react34.createElement)("button", { type: "button", className: "bt-round", "aria-label": t("New section"), title: t("New section"), onClick: createNewSection }, (0, import_react34.createElement)(FolderIcon)),
+    teamControls?.directory ?? (0, import_react34.createElement)("button", { type: "button", className: "bt-round", "aria-label": t("New section"), title: t("New section"), onClick: createNewSection }, (0, import_react34.createElement)(FolderIcon)),
     (0, import_react34.createElement)("button", { type: "button", className: "bt-round", "aria-label": t("Search"), title: t("Search"), onClick: () => actions.openPalette() }, (0, import_react34.createElement)(SearchIcon)),
     (0, import_react34.createElement)("button", { type: "button", className: "bt-round", "aria-label": t("New…"), title: t("New…"), onClick: () => actions.openNewChat("new") }, (0, import_react34.createElement)(PlusIcon)),
     (0, import_react34.createElement)("button", { type: "button", className: "bt-round bt-side-collapse", "aria-label": t("Collapse sidebar"), title: t("Collapse sidebar"), onClick: onToggle }, (0, import_react34.createElement)(SidebarIcon))
@@ -27939,11 +27958,20 @@ function TeamSidebar(props) {
     main ? (0, import_react34.createElement)(BotRow, { ...rowProps, bot: main, marked: markedUnread[main.id] === true }) : roster.ready ? null : (0, import_react34.createElement)("div", { className: "bt-hint" }, bootFailed ? bootHint() : t("Setting up your Main Bot…")),
     (0, import_react34.createElement)("span", { className: "bt-rail-sep", "aria-hidden": true })
   );
-  const foot = wideContent ? (0, import_react34.createElement)("div", { className: "bt-leftcol-foot" }, (0, import_react34.createElement)(AccountLauncher, { seat: false, actions })) : (0, import_react34.createElement)(
+  const teamContacts = teamImOrigin && !wideContent ? (0, import_react34.createElement)("button", {
+    type: "button",
+    className: "bt-round",
+    "aria-label": t("Contacts"),
+    title: t("Contacts"),
+    onClick: actions.openTeamDirectory
+  }, (0, import_react34.createElement)(PeopleIcon)) : null;
+  const foot = wideContent ? (0, import_react34.createElement)("div", { className: "bt-leftcol-foot" }, teamControls?.account ?? (0, import_react34.createElement)(AccountLauncher, { seat: false, actions })) : (0, import_react34.createElement)(
     "div",
     { className: "bt-leftcol-foot bt-leftcol-foot-rail" },
     (0, import_react34.createElement)("button", { type: "button", className: "bt-round", "aria-label": t("New…"), title: t("New…"), onClick: () => actions.openNewChat("new") }, (0, import_react34.createElement)(PlusIcon)),
-    (0, import_react34.createElement)(AccountLauncher, { seat: false, actions })
+    teamControls?.directory,
+    teamControls?.account ?? (0, import_react34.createElement)(AccountLauncher, { seat: false, actions }),
+    teamContacts
   );
   const content = (0, import_react34.createElement)(
     "div",
@@ -27966,6 +27994,7 @@ function TeamSidebar(props) {
         }
       },
       wideContent ? main ? (0, import_react34.createElement)(BotRow, { ...rowProps, bot: main, marked: markedUnread[main.id] === true }) : roster.ready ? null : (0, import_react34.createElement)("div", { className: "bt-hint" }, bootFailed ? bootHint() : t("Setting up your Main Bot…")) : null,
+      wideContent && teamImOrigin ? (0, import_react34.createElement)("div", { ref: actions.setTeamDirectoryTarget, className: "bt-team-directory" }) : null,
       sections.length > 0 && wideContent ? (0, import_react34.createElement)("div", {
         className: "bt-sec-ungrouped",
         "data-dragging": dragId ? "true" : void 0,
@@ -28363,7 +28392,7 @@ function useLandOnMainBot(roster, useSessions, actions) {
   const lastBot = (0, import_react34.useRef)(null);
   (0, import_react34.useEffect)(() => {
     if (!roster.ready || !roster.mainBotId) return void 0;
-    const [id, blank3] = mainView.split("|");
+    const [id, blank4] = mainView.split("|");
     const bot = id === "" ? void 0 : roster.byId[id];
     if (bot !== void 0) {
       lastBot.current = { botId: bot.id, sessionId: id };
@@ -28376,7 +28405,7 @@ function useLandOnMainBot(roster, useSessions, actions) {
       if ((room2.sessionId ?? room2.id) !== id) actions.openSession(room2.id);
       return void 0;
     }
-    if (id !== "" && ((actions.isAgentSession?.(id) ?? roster.agentOf[id] !== void 0) || blank3 !== "1")) {
+    if (id !== "" && ((actions.isAgentSession?.(id) ?? roster.agentOf[id] !== void 0) || blank4 !== "1")) {
       lastBot.current = null;
       return void 0;
     }
@@ -30919,13 +30948,13 @@ var qrcode = function(typeNumber, errorCorrectionLevel) {
     }
     return ascii.substring(0, ascii.length - 1);
   };
-  _this.renderTo2dContext = function(context, cellSize) {
+  _this.renderTo2dContext = function(context2, cellSize) {
     cellSize = cellSize || 2;
     const length = _this.getModuleCount();
     for (let row = 0; row < length; row++) {
       for (let col = 0; col < length; col++) {
-        context.fillStyle = _this.isDark(row, col) ? "black" : "white";
-        context.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
+        context2.fillStyle = _this.isDark(row, col) ? "black" : "white";
+        context2.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
       }
     }
   };
@@ -32198,11 +32227,11 @@ var GUIDES = {
 };
 var platformOf = (id) => IM_PLATFORMS.find((entry) => entry.id === id) ?? { id, name: id, fields: [] };
 function ImMark({ id, size = 36 }) {
-  const Brand = MARKS[BRAND[id]];
+  const Brand2 = MARKS[BRAND[id]];
   return (0, import_react42.createElement)(
     "span",
     { className: "bt-app-icon bt-im-icon", style: { width: size, height: size }, "data-small": size < 30 || void 0 },
-    Brand ? (0, import_react42.createElement)(Brand) : (0, import_react42.createElement)("span", { className: "bt-im-mono", style: { background: `var(--bt-im-${id}, var(--bt-ink-2))` }, "aria-hidden": true }, MONO[id] ?? id.slice(0, 1).toUpperCase())
+    Brand2 ? (0, import_react42.createElement)(Brand2) : (0, import_react42.createElement)("span", { className: "bt-im-mono", style: { background: `var(--bt-im-${id}, var(--bt-ink-2))` }, "aria-hidden": true }, MONO[id] ?? id.slice(0, 1).toUpperCase())
   );
 }
 function stateOf(conn, status) {
@@ -34027,7 +34056,7 @@ var PageBoundary = class extends import_react48.Component {
     return this.state.failed ? (0, import_react48.createElement)("div", { className: "bt-error", role: "alert" }, t("This page could not be shown.")) : this.props.children;
   }
 };
-function SettingsDialog({ page, id, roster, actions, useUpdate, leaving = false, dsh }) {
+function SettingsDialog({ page, id, roster, actions, useUpdate, leaving = false, dsh, customPages }) {
   const [error, setError] = (0, import_react48.useState)("");
   const close = (0, import_react48.useCallback)(() => actions.closeSettings(), []);
   useEscape(close);
@@ -34040,11 +34069,12 @@ function SettingsDialog({ page, id, roster, actions, useUpdate, leaving = false,
   });
   const bot = page === "bots" && id ? roster.byId[id] : void 0;
   const room2 = page === "groups" && id ? roster.roomsById[id] : void 0;
-  const pages = SETTINGS_PAGES.filter(([key]) => key !== "models" || actions.providers !== void 0);
+  const pages = customPages?.map(({ id: id2, label: label2 }) => [id2, label2]) ?? SETTINGS_PAGES.filter(([key]) => key !== "models" || actions.providers !== void 0);
+  const custom = customPages?.find((entry) => entry.id === page) ?? customPages?.[0];
   const extra = dshPages(dsh);
   const section = page === "dsh" ? extra.find((row) => row.id === id) : void 0;
   const advanced = page === "models" && id === "advanced" && hasSection(dsh, "models");
-  const shown = section ? "dsh" : pages.some(([key]) => key === page) ? page : "general";
+  const shown = custom ? custom.id : section ? "dsh" : pages.some(([key]) => key === page) ? page : "general";
   const usageFocus = shown === "usage" && id ? id : null;
   const label = section ? section.label : advanced ? t("Advanced settings") : t(pages.find(([key]) => key === shown)[1]);
   const back = bot ? t("Back to Bots") : room2 ? t("Back to group chats") : usageFocus ? t("All usage") : advanced ? t("Back to models") : null;
@@ -34064,7 +34094,7 @@ function SettingsDialog({ page, id, roster, actions, useUpdate, leaving = false,
     className: "bt-settings-item",
     "aria-current": shown === key ? "page" : void 0,
     onClick: () => actions.openSettings(key)
-  }, (0, import_react48.createElement)(PAGE_ICONS[key]), t(text), key === "phone" ? (0, import_react48.createElement)("span", { className: "bt-tag", style: { marginLeft: "auto" } }, t("Beta")) : null);
+  }, (0, import_react48.createElement)(customPages?.find((entry) => entry.id === key)?.icon ?? PAGE_ICONS[key]), t(text), key === "phone" ? (0, import_react48.createElement)("span", { className: "bt-tag", style: { marginLeft: "auto" } }, t("Beta")) : null);
   return (0, import_react48.createElement)(
     "div",
     { className: "bt-settings-layer", "data-leaving": leaving || void 0 },
@@ -34108,6 +34138,7 @@ function SettingsDialog({ page, id, roster, actions, useUpdate, leaving = false,
           (0, import_react48.createElement)(
             PageBoundary,
             null,
+            custom ? custom.content : null,
             shown === "computer" ? (0, import_react48.createElement)(ComputerPage, { roster, actions, run: run2, Section: SetSection, Row: SetRow, Switch }) : null,
             shown === "general" ? (0, import_react48.createElement)(GeneralPage, { roster, actions, run: run2, dsh }) : null,
             shown === "models" && !advanced ? (0, import_react48.createElement)(ProvidersPage, { actions, run: run2, Section: SetSection, advanced: hasSection(dsh, "models") ? () => actions.openSettings("models", "advanced") : null }) : null,
@@ -36491,6 +36522,12 @@ function NewChat({ mode, sectionId = null, paneLeft, roster, actions }) {
   const options = [];
   if (!group && picked.length === 0 && mode !== "search" && wanted === "") {
     options.push({ key: "new", icon: (0, import_react55.createElement)(PlusIcon), label: t("Create new Bot"), run: createBot });
+    if (actions.hasTeamDirectory?.()) options.push({
+      key: "team-group",
+      icon: (0, import_react55.createElement)(PeopleIcon),
+      label: t("Create team group chat"),
+      run: actions.openTeamGroup
+    });
     options.push({ key: "group", icon: (0, import_react55.createElement)(PeopleIcon), label: t("Create group chat"), run: () => {
       setGroup(true);
       setCursor(0);
@@ -39153,6 +39190,1361 @@ function Overlays({ useRoster, useUi, useSessions, useSessionStatus, useActivity
   );
 }
 
+// ../team/shared/paths.ts
+var prefix = "/api/im/v1";
+
+// ../team/web/api.ts
+var import_react63 = require("react");
+function client(origin) {
+  const embedded = origin !== location.origin;
+  async function api(path2, method = "GET", body) {
+    const response = await fetch(origin + prefix + path2, {
+      method,
+      credentials: "include",
+      headers: body === void 0 || body instanceof FormData ? void 0 : { "content-type": "application/json" },
+      body: body === void 0 ? void 0 : body instanceof FormData ? body : JSON.stringify(body)
+    });
+    if (!response.ok) {
+      const result = await response.json().catch(() => ({}));
+      throw Object.assign(new Error(result.error ?? "请求失败"), { status: response.status });
+    }
+    return response.json();
+  }
+  return { api, origin, embedded };
+}
+var context = (0, import_react63.createContext)(null);
+function TeamApiProvider({ origin, children }) {
+  const value = (0, import_react63.useMemo)(() => client(origin), [origin]);
+  return (0, import_react63.createElement)(context.Provider, { value }, children);
+}
+function useTeamApi() {
+  const value = (0, import_react63.useContext)(context);
+  if (!value) throw new Error("Team API requires its provider");
+  return value;
+}
+
+// ../team/web/native.jsx
+var import_react64 = __toESM(require("react"), 1);
+var blank3 = {};
+var selectBlank = (select) => select(blank3);
+var noop = () => {
+};
+var person = (entry, agent = false) => ({
+  id: entry.id,
+  name: entry.name,
+  ...agent ? {} : { color: "gray", avatar: { shape: "gumdrop" } }
+});
+function useBotAppearance(prefs, enabled) {
+  (0, import_react64.useEffect)(() => {
+    if (!enabled) return;
+    const theme = allThemes()[prefs.theme] ?? allThemes().deepseek;
+    const sheet = document.createElement("style");
+    sheet.textContent = themeCss(theme, prefs.accent);
+    document.head.append(sheet);
+    document.body.dataset.btLayout = prefs.layout ?? "bubble";
+    document.body.style.setProperty("--bt-msg-w", String(widthOf(prefs) / 100));
+    document.body.style.setProperty("--bt-flat-w", String(flatWidthOf(prefs) / 100));
+    return () => sheet.remove();
+  }, [prefs, enabled]);
+}
+function Brand() {
+  return /* @__PURE__ */ import_react64.default.createElement("div", { className: "bt-brand team-brand" }, /* @__PURE__ */ import_react64.default.createElement(BrandMark, null), /* @__PURE__ */ import_react64.default.createElement(BrandName, null));
+}
+function Avatar({ name, id = name, agent = false, size = 36 }) {
+  return /* @__PURE__ */ import_react64.default.createElement(BotMark, { bot: person({ id: id ?? name, name }, agent), size });
+}
+function NativeChrome({ rooms, active, people, agents, members, runs, prefs, panel, open, showPanel, showModal, personalUrl, embedded }) {
+  const [viewport, setViewport] = (0, import_react64.useState)(window.innerWidth);
+  const [sidebarWidth, setSidebarWidth] = (0, import_react64.useState)(280);
+  const [pref, setSidebarPref] = (0, import_react64.useState)("open");
+  const [drawer, setLeftDrawer] = (0, import_react64.useState)(false);
+  (0, import_react64.useEffect)(() => {
+    const resize = () => setViewport(window.innerWidth);
+    window.addEventListener("resize", resize);
+    return () => window.removeEventListener("resize", resize);
+  }, []);
+  const byId = Object.fromEntries([
+    ...people.map((entry) => [entry.id, person(entry)]),
+    ...agents.map((entry) => [entry.id, person(entry, true)])
+  ]);
+  const groupRows = rooms.map((room2) => {
+    const loaded = room2.id === active?.id && members.length;
+    const fallbackId = room2.kind === "agent" ? agents.find((agent) => agent.name === room2.name)?.id : room2.kind === "dm" ? people.find((entry) => entry.name === room2.name)?.id : void 0;
+    return {
+      ...room2,
+      sessionId: room2.id,
+      createdAt: Date.parse(room2.updated_at),
+      members: loaded ? members.map((entry) => entry.id) : fallbackId ? [fallbackId] : []
+    };
+  });
+  const roster = {
+    ready: true,
+    prefs,
+    bots: [],
+    byId,
+    rooms: groupRows,
+    roomsById: Object.fromEntries(groupRows.map((room2) => [room2.id, room2])),
+    agents: [],
+    sections: [],
+    memory: false
+  };
+  const sessions = {
+    ids: rooms.map((room2) => room2.id),
+    byId: Object.fromEntries(rooms.map((room2) => [room2.id, {
+      id: room2.id,
+      title: room2.name,
+      retainedBy: { mainView: Number(room2.id === active?.id) },
+      updatedAt: Date.parse(room2.updated_at)
+    }]))
+  };
+  const status = new Map(rooms.map((room2) => [room2.id, {
+    completionUnread: room2.unread > 0,
+    running: room2.id === active?.id && runs.some((run2) => ["running", "approval"].includes(run2.status))
+  }]));
+  const ui2 = { unread: {}, leftDrawer: drawer, details: panel ? active?.id : null, panelYield: true };
+  const actions = {
+    openSession: open,
+    openMenu: (room2) => {
+      open(room2.id);
+      showPanel(true);
+    },
+    openPalette: () => showModal("search"),
+    openNewChat: () => showModal(personalUrl ? "new" : "create"),
+    setSidebarWidth,
+    setSidebarPref,
+    setLeftDrawer,
+    toggleLeftHidden: () => {
+      if (pref === "hidden") setSidebarPref("open");
+      else if (viewport < sidebarWidth + 420) {
+        setSidebarPref("open");
+        setLeftDrawer((value) => !value);
+      } else setSidebarPref("hidden");
+    },
+    toggleDetails: () => showPanel(!panel),
+    beginVisit: noop,
+    endVisit: noop,
+    clearUnread: noop,
+    clearLive: noop,
+    setFlags: async () => {
+    }
+  };
+  const views = {
+    actions,
+    useRoster: (select) => select(roster),
+    useSessions: (select) => select(sessions),
+    useUi: (select) => select(ui2),
+    useSessionStatus: (select) => select(status),
+    useSessionRetainInfo: (id, select) => select(sessions.byId[id]),
+    useActivity: selectBlank,
+    useUpdate: selectBlank,
+    useRegistry: selectBlank,
+    useTurnClock: selectBlank,
+    useLive: selectBlank,
+    useSession: selectBlank,
+    useFrame: (select) => select({ viewport, sidebarWidth, collapsedWidth: 0 }),
+    useSidebarPref: (select) => select(pref)
+  };
+  return /* @__PURE__ */ import_react64.default.createElement(import_react64.default.Fragment, null, !embedded && /* @__PURE__ */ import_react64.default.createElement(TeamSidebar, { ...views, wide: true, teamControls: {
+    directory: /* @__PURE__ */ import_react64.default.createElement("button", { type: "button", className: "bt-round", "aria-label": "通讯录", title: "通讯录", onClick: () => showModal("directory") }, /* @__PURE__ */ import_react64.default.createElement(PeopleIcon, null)),
+    account: /* @__PURE__ */ import_react64.default.createElement("button", { type: "button", className: "dsb-settings", "aria-label": "设置", title: "设置", onClick: () => showModal("settings") }, /* @__PURE__ */ import_react64.default.createElement(YouAvatar, null))
+  } }), active && /* @__PURE__ */ import_react64.default.createElement("div", { className: "dsb-head" }, /* @__PURE__ */ import_react64.default.createElement(HeaderPill, { ...views, sessionId: active.id })));
+}
+function NativeSettings({ page, setPage, close, profile, administration, look, personal }) {
+  const pages = [
+    { id: "team-profile", label: "账户", icon: PeopleIcon, content: profile },
+    { id: "team-appearance", label: "Appearance", icon: GearIcon, content: look },
+    ...personal ? [{ id: "team-personal", label: "个人工作区", icon: MonitorIcon, content: personal }] : [],
+    ...administration ? [{ id: "team-administration", label: "团队管理", icon: GearIcon, content: administration }] : []
+  ];
+  return /* @__PURE__ */ import_react64.default.createElement(
+    SettingsDialog,
+    {
+      page,
+      roster: {},
+      customPages: pages,
+      actions: { openSettings: setPage, closeSettings: close },
+      useUpdate: selectBlank
+    }
+  );
+}
+function NativeMessage({ message, mine, children }) {
+  const id = message.agent_id ?? message.user_id;
+  const sender = person({ id, name: message.sender }, Boolean(message.agent_id));
+  const roster = { prefs: {}, bots: [], byId: { [id]: sender } };
+  if (mine) return /* @__PURE__ */ import_react64.default.createElement("div", { className: "bt-urow team-urow" }, /* @__PURE__ */ import_react64.default.createElement("div", { className: "bt-ububble" }, message.text && /* @__PURE__ */ import_react64.default.createElement(import_dsh_client_ui_primitives.MarkdownText, { text: message.text, variant: "compact" }), children));
+  return /* @__PURE__ */ import_react64.default.createElement("div", { className: "bt-group-msg team-group-msg" }, /* @__PURE__ */ import_react64.default.createElement("div", { className: "bt-group-name" }, /* @__PURE__ */ import_react64.default.createElement("span", { className: "bt-lead" }, /* @__PURE__ */ import_react64.default.createElement(Avatar, { id, name: sender.name, agent: Boolean(message.agent_id), size: 22 })), sender.name, message.agent_id && /* @__PURE__ */ import_react64.default.createElement("span", { className: "bt-group-role" }, "Agent"), /* @__PURE__ */ import_react64.default.createElement("time", { className: "bt-group-time" }, new Date(message.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }))), message.text && /* @__PURE__ */ import_react64.default.createElement(
+    Bubbles,
+    {
+      texts: [message.text],
+      roster,
+      selfId: id,
+      actions: { openSession: noop },
+      streaming: message.status === "running"
+    }
+  ), children);
+}
+
+// ../team/web/personal.tsx
+var import_react65 = require("react");
+function usePersonalRuns(ready, executor2) {
+  const { api } = useTeamApi();
+  const [awaiting, setAwaiting] = (0, import_react65.useState)();
+  (0, import_react65.useEffect)(() => {
+    if (!ready || !executor2) return;
+    const runner = executor2;
+    let stopped = false;
+    let current = null;
+    let result = null;
+    let sent = false;
+    let position = 0;
+    let started = 0;
+    let timer;
+    const task = () => ({
+      runId: current.id,
+      bindingId: current.bindingId,
+      botId: current.localBotId,
+      text: current.prompt
+    });
+    const update = (value) => api("/personal/runs/" + current.id + "/events", "POST", {
+      lease: current.lease,
+      position: ++position,
+      update: value
+    });
+    function clear() {
+      current = null;
+      result = null;
+      sent = false;
+      position = 0;
+      setAwaiting(void 0);
+    }
+    async function poll() {
+      try {
+        if (!current) {
+          const run2 = await api("/personal/runs/claim", "POST");
+          if (!run2 || stopped) return;
+          current = run2;
+          started = Date.now();
+          setAwaiting(run2.conversationId);
+        }
+        const heartbeat = await api("/personal/runs/" + current.id + "/heartbeat", "POST", { lease: current.lease });
+        if (stopped) return;
+        if (heartbeat.decision !== "allow") {
+          if (Date.now() - started > 3e5) {
+            await update({ type: "failed", reason: "Personal Agent approval expired" });
+            clear();
+          }
+          return;
+        }
+        setAwaiting(void 0);
+        if (!sent) {
+          if (current.files.length) {
+            await update({ type: "failed", reason: "Personal Agent group tasks currently accept text only" });
+            clear();
+            return;
+          }
+          sent = true;
+          await update({ type: "progress", text: "个人 Agent 正在本机执行" });
+          const input = task();
+          void runner.run(input).then(
+            (text) => {
+              if (!stopped && current?.id === input.runId) result = { text: text.slice(0, 2e5) };
+            },
+            () => {
+              if (!stopped && current?.id === input.runId) result = {};
+            }
+          );
+        }
+        if (result) {
+          const answer = result.text;
+          if (answer) {
+            for (let index = 0; index < answer.length; index += 8e3)
+              await update({ type: "delta", text: answer.slice(index, index + 8e3) });
+            await update({ type: "complete" });
+          } else await update({ type: "failed", reason: "Personal Agent did not return a reply" });
+          clear();
+        } else if (Date.now() - started > 6e5) {
+          void runner.stop(task());
+          await update({ type: "failed", reason: "Personal Agent timed out" });
+          clear();
+        }
+      } catch {
+        if (sent) void runner.stop(task());
+        if (!stopped) clear();
+      } finally {
+        if (!stopped) timer = setTimeout(() => void poll(), 1600);
+      }
+    }
+    void poll();
+    return () => {
+      stopped = true;
+      clearTimeout(timer);
+      if (sent) void runner.stop(task());
+    };
+  }, [api, ready, executor2]);
+  return awaiting;
+}
+
+// ../team/web/app.tsx
+var import_react66 = __toESM(require("react"), 1);
+var import_react_dom12 = require("react-dom");
+var desktop = window.teamDesktop;
+var empty = () => ({ text: "", mentions: [], files: [], quote: null });
+var merge = (a, b) => [...new Map([...a, ...b].map((m) => [m.id, m])).values()].sort(
+  (x, y) => Number(BigInt(x.seq) - BigInt(y.seq))
+);
+var errorText = (error) => error instanceof Error ? error.message : String(error);
+var loginAppearance = { theme: "deepseek", layout: "bubble" };
+function Login({ onLogin }) {
+  const { api, embedded } = useTeamApi();
+  useBotAppearance(loginAppearance, !embedded);
+  const [error, setError] = (0, import_react66.useState)("");
+  const [busy, setBusy] = (0, import_react66.useState)(false);
+  const query = new URLSearchParams(location.hash.slice(1));
+  const invite = query.get("invite"), reset = query.get("reset");
+  return /* @__PURE__ */ import_react66.default.createElement("main", { className: "login" }, /* @__PURE__ */ import_react66.default.createElement("div", { className: "login-card" }, /* @__PURE__ */ import_react66.default.createElement(Brand, null), /* @__PURE__ */ import_react66.default.createElement("h1", null, reset ? "重置密码" : invite ? "加入团队" : "登录团队"), /* @__PURE__ */ import_react66.default.createElement(
+    "form",
+    {
+      onSubmit: async (e) => {
+        e.preventDefault();
+        setBusy(true);
+        setError("");
+        const form = new FormData(e.currentTarget);
+        try {
+          await api(invite || reset ? "/accept" : "/login", "POST", {
+            ...Object.fromEntries(form),
+            ...invite || reset ? { token: invite ?? reset } : {}
+          });
+          if (invite || reset) history.replaceState({}, "", location.pathname);
+          onLogin();
+        } catch (error2) {
+          setError(errorText(error2));
+        } finally {
+          setBusy(false);
+        }
+      }
+    },
+    !reset && /* @__PURE__ */ import_react66.default.createElement("label", null, "用户名", /* @__PURE__ */ import_react66.default.createElement("input", { name: "username", autoComplete: "username", required: true })),
+    invite && /* @__PURE__ */ import_react66.default.createElement("label", null, "显示名称", /* @__PURE__ */ import_react66.default.createElement("input", { name: "name", required: true, maxLength: 100 })),
+    /* @__PURE__ */ import_react66.default.createElement("label", null, "密码", /* @__PURE__ */ import_react66.default.createElement(
+      "input",
+      {
+        name: "password",
+        type: "password",
+        autoComplete: invite || reset ? "new-password" : "current-password",
+        minLength: invite || reset ? 12 : void 0,
+        required: true
+      }
+    )),
+    error && /* @__PURE__ */ import_react66.default.createElement("p", { role: "alert", className: "error" }, error),
+    /* @__PURE__ */ import_react66.default.createElement("button", { className: "primary", disabled: busy }, busy ? "正在提交…" : invite ? "加入" : reset ? "保存密码" : "登录")
+  ), desktop && /* @__PURE__ */ import_react66.default.createElement("button", { className: "quiet", onClick: desktop.settings }, "更改服务器")));
+}
+function Modal2({ title, close, children }) {
+  const ref = (0, import_react66.useRef)(null);
+  (0, import_react66.useEffect)(() => {
+    ref.current?.showModal();
+  }, []);
+  return /* @__PURE__ */ import_react66.default.createElement("dialog", { className: "team-dialog", ref, onCancel: close }, /* @__PURE__ */ import_react66.default.createElement("div", { className: "modal-head" }, /* @__PURE__ */ import_react66.default.createElement("h2", null, title), /* @__PURE__ */ import_react66.default.createElement("button", { "aria-label": "关闭", onClick: close }, "×")), children);
+}
+function Admin({
+  agents,
+  people,
+  reload,
+  call: call2
+}) {
+  const { api } = useTeamApi();
+  const [link, setLink] = (0, import_react66.useState)("");
+  const [model, setModel] = (0, import_react66.useState)("");
+  const [log, setLog] = (0, import_react66.useState)([]);
+  const [editing, setEditing] = (0, import_react66.useState)(null);
+  (0, import_react66.useEffect)(() => {
+    void call2(async () => setModel((await api("/admin/settings")).routerModel));
+  }, []);
+  return /* @__PURE__ */ import_react66.default.createElement("div", { className: "admin" }, /* @__PURE__ */ import_react66.default.createElement("h3", null, "团队成员"), /* @__PURE__ */ import_react66.default.createElement(
+    "button",
+    {
+      className: "primary",
+      onClick: () => void call2(async () => setLink((await api("/admin/invitations", "POST", {})).url))
+    },
+    "生成邀请链接"
+  ), link && /* @__PURE__ */ import_react66.default.createElement("div", { className: "invite" }, /* @__PURE__ */ import_react66.default.createElement("input", { "aria-label": "邀请或重置链接", readOnly: true, value: link, onFocus: (e) => e.target.select() }), /* @__PURE__ */ import_react66.default.createElement("button", { onClick: () => void call2(() => navigator.clipboard.writeText(link)) }, "复制")), people.map((p) => /* @__PURE__ */ import_react66.default.createElement("div", { className: "person-row", key: p.id }, /* @__PURE__ */ import_react66.default.createElement(Avatar, { id: p.id, name: p.name }), /* @__PURE__ */ import_react66.default.createElement("span", null, p.name), p.admin ? /* @__PURE__ */ import_react66.default.createElement("small", null, "管理员") : /* @__PURE__ */ import_react66.default.createElement("div", { className: "row-actions" }, /* @__PURE__ */ import_react66.default.createElement(
+    "button",
+    {
+      onClick: () => void call2(async () => {
+        await api("/admin/users/" + p.id, "PATCH", { active: !p.active });
+        await reload();
+      })
+    },
+    p.active ? "停用" : "恢复"
+  ), p.active && /* @__PURE__ */ import_react66.default.createElement(
+    "button",
+    {
+      onClick: () => void call2(
+        async () => setLink(
+          (await api("/admin/invitations", "POST", { resetUser: p.id })).url
+        )
+      )
+    },
+    "重置密码"
+  )))), /* @__PURE__ */ import_react66.default.createElement("h3", null, "服务器 Agent"), agents.map((p) => /* @__PURE__ */ import_react66.default.createElement("div", { className: "person-row", key: p.id }, /* @__PURE__ */ import_react66.default.createElement(Avatar, { id: p.id, name: p.name, agent: true }), /* @__PURE__ */ import_react66.default.createElement("span", null, p.name, !p.active ? " · 已停用" : ""), /* @__PURE__ */ import_react66.default.createElement("button", { onClick: () => setEditing(p) }, "编辑"))), /* @__PURE__ */ import_react66.default.createElement("button", { onClick: () => setEditing({ id: "", name: "", kind: "agent" }) }, "新建 Agent"), editing && /* @__PURE__ */ import_react66.default.createElement(
+    "form",
+    {
+      key: editing.id,
+      onSubmit: (e) => {
+        e.preventDefault();
+        const form = new FormData(e.currentTarget);
+        void call2(async () => {
+          await api("/admin/agents" + (editing.id ? "/" + editing.id : ""), editing.id ? "PUT" : "POST", {
+            name: form.get("name"),
+            description: form.get("description"),
+            instructions: form.get("instructions"),
+            model: form.get("model"),
+            tools: form.has("tools"),
+            active: form.has("active")
+          });
+          setEditing(null);
+          await reload();
+        });
+      }
+    },
+    /* @__PURE__ */ import_react66.default.createElement("label", null, "名称", /* @__PURE__ */ import_react66.default.createElement("input", { name: "name", required: true, defaultValue: editing.name })),
+    /* @__PURE__ */ import_react66.default.createElement("label", null, "能力说明", /* @__PURE__ */ import_react66.default.createElement("input", { name: "description", defaultValue: editing.description })),
+    /* @__PURE__ */ import_react66.default.createElement("label", null, "指令", /* @__PURE__ */ import_react66.default.createElement("textarea", { name: "instructions", defaultValue: editing.instructions })),
+    /* @__PURE__ */ import_react66.default.createElement("label", null, "DSH 模型", /* @__PURE__ */ import_react66.default.createElement(
+      "input",
+      {
+        name: "model",
+        required: true,
+        placeholder: "deepseek-official/模型 ID",
+        defaultValue: editing.model
+      }
+    )),
+    /* @__PURE__ */ import_react66.default.createElement("label", { className: "check" }, /* @__PURE__ */ import_react66.default.createElement("input", { type: "checkbox", name: "tools", defaultChecked: editing.tools }), "允许处理与生成文件"),
+    /* @__PURE__ */ import_react66.default.createElement("label", { className: "check" }, /* @__PURE__ */ import_react66.default.createElement("input", { type: "checkbox", name: "active", defaultChecked: editing.active ?? true }), "启用"),
+    /* @__PURE__ */ import_react66.default.createElement("button", { className: "primary" }, "保存 Agent")
+  ), /* @__PURE__ */ import_react66.default.createElement("h3", null, "Super Agent"), /* @__PURE__ */ import_react66.default.createElement(
+    "form",
+    {
+      onSubmit: (e) => {
+        e.preventDefault();
+        void call2(() => api("/admin/settings", "PUT", { routerModel: model }));
+      }
+    },
+    /* @__PURE__ */ import_react66.default.createElement("label", null, "快速分类模型 ID", /* @__PURE__ */ import_react66.default.createElement(
+      "input",
+      {
+        value: model,
+        onChange: (e) => setModel(e.target.value),
+        placeholder: "配置的分类服务中的模型 ID"
+      }
+    )),
+    /* @__PURE__ */ import_react66.default.createElement("button", { className: "primary" }, "保存模型")
+  ), /* @__PURE__ */ import_react66.default.createElement("button", { onClick: () => void call2(async () => setLog(await api("/admin/routing-log"))) }, "查看调度记录"), log.length > 0 && /* @__PURE__ */ import_react66.default.createElement("ul", null, log.map((l) => /* @__PURE__ */ import_react66.default.createElement("li", { key: l.id }, l.outcome ?? l.status, l.agent ? " · " + l.agent : "", l.duration_ms ? " · " + Math.round(Number(l.duration_ms)) + " ms" : ""))));
+}
+function SidebarContacts({ workspace, children }) {
+  if (!workspace?.target) return null;
+  return (0, import_react_dom12.createPortal)(children, workspace.target);
+}
+function Chat({ me, logout, workspace }) {
+  const { api, origin, embedded } = useTeamApi();
+  const visible = workspace?.visible ?? true;
+  const visibleRef = (0, import_react66.useRef)(visible);
+  visibleRef.current = visible;
+  const native = me.personalWorkspace === location.origin ? workspace : void 0;
+  const hasPersonal = Boolean(native);
+  const personalBots = native?.bots ?? [];
+  const awaiting = usePersonalRuns(Boolean(native), native?.execute);
+  function openPersonal(page = "home", botId) {
+    setModal("");
+    setPanel(false);
+    native?.open(page, botId);
+  }
+  const [rooms, setRooms] = (0, import_react66.useState)([]);
+  const [people, setPeople] = (0, import_react66.useState)([]), [agents, setAgents] = (0, import_react66.useState)([]);
+  const [roomId, setRoom] = (0, import_react66.useState)();
+  const [members, setMembers] = (0, import_react66.useState)([]);
+  const [messages, setMessages] = (0, import_react66.useState)([]);
+  const [runs, setRuns] = (0, import_react66.useState)([]);
+  const [draft, setDraft] = (0, import_react66.useState)(empty);
+  const [pending, setPending] = (0, import_react66.useState)(null);
+  const [sending, setSending] = (0, import_react66.useState)(false);
+  const [modal, setModal] = (0, import_react66.useState)("");
+  const [settingsPage, setSettingsPage] = (0, import_react66.useState)("team-profile");
+  const [prefs, setPrefs] = (0, import_react66.useState)(() => {
+    try {
+      return JSON.parse(localStorage.getItem("team:appearance") ?? "null") ?? { theme: "deepseek", layout: "bubble" };
+    } catch {
+      return { theme: "deepseek", layout: "bubble" };
+    }
+  });
+  const [error, setError] = (0, import_react66.useState)("");
+  const [connected, setConnected] = (0, import_react66.useState)(false);
+  const [runnerOnline, setRunnerOnline] = (0, import_react66.useState)();
+  const [older, setOlder] = (0, import_react66.useState)(true);
+  const [search, setSearch] = (0, import_react66.useState)(null);
+  const [picks, setPicks] = (0, import_react66.useState)([]);
+  const [panel, setPanel] = (0, import_react66.useState)(false);
+  const [mentions, setMentions] = (0, import_react66.useState)(false);
+  const [focusMessage, setFocusMessage] = (0, import_react66.useState)("");
+  const [notifications, setNotifications] = (0, import_react66.useState)(false);
+  const messagesEl = (0, import_react66.useRef)(null);
+  const roomRef = (0, import_react66.useRef)(void 0);
+  const active = rooms.find((r) => r.id === roomId);
+  const owner = active?.kind === "group" && active.owner_id === me.id;
+  const bottom = (0, import_react66.useRef)(true);
+  const notificationsRef = (0, import_react66.useRef)(false);
+  const stateVersion = (0, import_react66.useRef)(0);
+  const loadVersion = (0, import_react66.useRef)(0);
+  const lastSeq = (0, import_react66.useRef)(void 0);
+  async function call2(fn) {
+    setError("");
+    try {
+      await fn();
+    } catch (error2) {
+      if (error2.status === 401) logout();
+      else setError(errorText(error2));
+    }
+  }
+  async function reload() {
+    const [p, a] = await Promise.all([api("/people"), api("/agents")]);
+    setPeople(p);
+    setAgents(a);
+  }
+  async function list() {
+    const result = await api("/conversations");
+    setRooms(result);
+    desktop?.badge(result.reduce((sum, r) => sum + r.unread, 0));
+    if (roomRef.current && !result.some((r) => r.id === roomRef.current)) open(void 0);
+  }
+  function open(id) {
+    if (roomRef.current === id) return;
+    roomRef.current = id;
+    stateVersion.current++;
+    lastSeq.current = void 0;
+    setRoom(id);
+    setMessages([]);
+    setMembers([]);
+    setRuns([]);
+    setDraft(empty());
+    setOlder(true);
+    setPanel(false);
+    setPending(null);
+    setMentions(false);
+    setError("");
+    bottom.current = true;
+  }
+  async function timeline(id, fresh = false, changed = []) {
+    const version = stateVersion.current;
+    const load = ++loadVersion.current;
+    let after = lastSeq.current;
+    const catchUp = [];
+    while (after) {
+      const batch = await api("/conversations/" + id + "/messages?after=" + after);
+      if (version !== stateVersion.current || load !== loadVersion.current) return;
+      catchUp.push(...batch);
+      if (batch.length < 50) break;
+      after = batch.at(-1).seq;
+    }
+    const [page, roster, tasks, updates] = await Promise.all([
+      api("/conversations/" + id + "/messages"),
+      api("/conversations/" + id + "/members"),
+      api("/conversations/" + id + "/runs"),
+      changed.length ? api("/conversations/" + id + "/message-updates?ids=" + changed.join(",")) : Promise.resolve([])
+    ]);
+    if (roomRef.current !== id || version !== stateVersion.current || load !== loadVersion.current) return;
+    lastSeq.current = page.at(-1)?.seq;
+    setMessages((old) => {
+      const loaded = merge(old, merge(catchUp, page));
+      const visible2 = new Set(loaded.map((message) => message.id));
+      return merge(loaded, updates.filter((message) => visible2.has(message.id)));
+    });
+    setMembers(roster);
+    setRuns(tasks);
+    if (fresh) setOlder(page.length === 50);
+    if (page.length && visibleRef.current && document.visibilityState === "visible" && bottom.current)
+      await api("/conversations/" + id + "/read", "POST", { seq: page.at(-1).seq });
+  }
+  (0, import_react66.useEffect)(() => {
+    void call2(async () => {
+      await Promise.all([list(), reload()]);
+    });
+    return desktop?.onOpen((id) => open(id));
+  }, []);
+  (0, import_react66.useEffect)(() => {
+    if (roomId) void call2(() => timeline(roomId, true));
+  }, [roomId, visible]);
+  (0, import_react66.useEffect)(() => {
+    let closed = false;
+    const refresh = async () => {
+      const status = await api("/runner-status").catch(() => void 0);
+      if (!closed) setRunnerOnline(status?.online);
+    };
+    void refresh();
+    const timer = setInterval(() => void refresh(), 5e3);
+    return () => {
+      closed = true;
+      clearInterval(timer);
+    };
+  }, []);
+  (0, import_react66.useEffect)(() => {
+    let socket, cursor, stopped = false;
+    let retry, update;
+    let shouldList = false, shouldReload = false, shouldTimeline = false, syncing = false;
+    const changed = /* @__PURE__ */ new Map();
+    const flush = async () => {
+      update = void 0;
+      if (stopped || syncing) return;
+      syncing = true;
+      const flags = [shouldList, shouldReload, shouldTimeline];
+      const pendingChanges = new Map(changed);
+      changed.clear();
+      shouldList = shouldReload = shouldTimeline = false;
+      try {
+        await call2(async () => {
+          if (flags[0]) await list();
+          if (flags[1]) await reload();
+          const id = roomRef.current;
+          if (flags[2] && id) {
+            const ids = [...pendingChanges].filter(([, room2]) => room2 === id).map(([message]) => message);
+            await timeline(id, false, ids.slice(-100));
+          }
+        });
+      } finally {
+        syncing = false;
+        if (shouldList || shouldReload || shouldTimeline) schedule();
+      }
+    };
+    const schedule = () => {
+      if (!update && !stopped) update = setTimeout(() => void flush(), 140);
+    };
+    const connect = () => {
+      const wsUrl = new URL(prefix + "/events", origin);
+      wsUrl.protocol = wsUrl.protocol === "https:" ? "wss:" : "ws:";
+      if (cursor) wsUrl.searchParams.set("after", cursor);
+      socket = new WebSocket(wsUrl);
+      socket.onmessage = (e) => {
+        const event = JSON.parse(e.data);
+        if (cursor && BigInt(event.id) < BigInt(cursor)) return;
+        cursor = event.id;
+        if (event.kind === "ready") {
+          setConnected(true);
+          shouldList = shouldTimeline = shouldReload = true;
+        } else {
+          if (event.kind !== "message.delta") shouldList = true;
+          shouldReload ||= event.kind === "directory.updated";
+          shouldTimeline ||= Boolean(event.conversation_id && event.conversation_id === roomRef.current);
+          if (event.conversation_id && event.conversation_id === roomRef.current && event.kind !== "message.added" && typeof event.data.messageId === "string") changed.set(event.data.messageId, event.conversation_id);
+          if (event.kind === "message.added" && event.data.authorId !== me.id && event.conversation_id && (!visibleRef.current || event.conversation_id !== roomRef.current || document.visibilityState !== "visible")) {
+            const title = "DS Bot Team", body = "收到一条新消息";
+            if (desktop) desktop.notify({ title, body, conversation: event.conversation_id });
+            else if (notificationsRef.current && Notification.permission === "granted")
+              new Notification(title, { body });
+          }
+        }
+        schedule();
+      };
+      socket.onclose = (e) => {
+        if (stopped) return;
+        setConnected(false);
+        if (e.code === 1008) {
+          logout();
+          return;
+        }
+        retry = setTimeout(connect, 1500);
+      };
+    };
+    const visible2 = () => {
+      shouldList = shouldTimeline = true;
+      schedule();
+    };
+    document.addEventListener("visibilitychange", visible2);
+    connect();
+    return () => {
+      stopped = true;
+      clearTimeout(retry);
+      clearTimeout(update);
+      socket?.close();
+      document.removeEventListener("visibilitychange", visible2);
+    };
+  }, []);
+  (0, import_react66.useEffect)(() => {
+    if (visible && bottom.current && messagesEl.current) messagesEl.current.scrollTop = messagesEl.current.scrollHeight;
+  }, [messages, visible]);
+  (0, import_react66.useEffect)(() => {
+    if (focusMessage && messages.some((m) => m.id === focusMessage))
+      document.getElementById("m-" + focusMessage)?.scrollIntoView({ block: "center" });
+  }, [focusMessage, messages]);
+  const newChat = (person2) => void call2(async () => {
+    const result = await api("/conversations", "POST", {
+      kind: person2.kind === "agent" ? "agent" : "dm",
+      target: person2.id
+    });
+    await list();
+    open(result.id);
+    setModal("");
+  });
+  async function post() {
+    if (sending || !roomId || !draft.text.trim() && !draft.files.length && !draft.mentions.length) return;
+    const current = pending?.room === roomId ? pending : { room: roomId, clientMessageId: crypto.randomUUID(), draft, attachments: [] };
+    setPending(current);
+    setSending(true);
+    try {
+      await call2(async () => {
+        for (const file of current.draft.files.slice(current.attachments.length)) {
+          const form = new FormData();
+          form.set("file", file);
+          current.attachments.push(
+            (await api("/conversations/" + current.room + "/files", "POST", form)).id
+          );
+        }
+        await api("/conversations/" + current.room + "/messages", "POST", {
+          clientMessageId: current.clientMessageId,
+          text: [...current.draft.mentions.map((m) => "@" + m.name), current.draft.text].filter(Boolean).join(" "),
+          replyId: current.draft.quote?.id,
+          mentions: current.draft.mentions.filter((m) => m.id !== "all").map((m) => m.id),
+          mentionAll: current.draft.mentions.some((m) => m.id === "all"),
+          attachments: current.attachments
+        });
+        if (roomRef.current === current.room) {
+          setDraft(empty());
+          setPending(null);
+          bottom.current = true;
+          await timeline(current.room);
+        }
+        await list();
+      });
+    } finally {
+      setSending(false);
+    }
+  }
+  function patch(payload) {
+    if (!roomId) return;
+    void call2(async () => {
+      await api("/conversations/" + roomId, "PATCH", payload);
+      await Promise.all([list(), timeline(roomId)]);
+    });
+  }
+  async function loadOlder() {
+    if (!roomId || !messages.length) return;
+    const id = roomId;
+    await call2(async () => {
+      const page = await api("/conversations/" + id + "/messages?before=" + messages[0].seq);
+      if (roomRef.current !== id) return;
+      setOlder(page.length === 50);
+      const el = messagesEl.current;
+      const height = el?.scrollHeight ?? 0, top = el?.scrollTop ?? 0;
+      bottom.current = false;
+      setMessages((old) => merge(page, old));
+      requestAnimationFrame(() => {
+        if (el) el.scrollTop = top + el.scrollHeight - height;
+      });
+    });
+  }
+  const memberOptions = [
+    ...people.filter((p) => p.id !== me.id && p.active),
+    ...agents.filter((p) => p.active && !p.personal)
+  ];
+  const mentionOptions = [
+    ...members.filter((m) => m.id !== me.id && m.active),
+    ...active?.kind === "group" ? [{ id: "all", name: "所有人", kind: "user" }] : []
+  ];
+  useBotAppearance(prefs, !embedded);
+  const composerDisabled = Boolean(pending) || sending;
+  function showModal(next) {
+    setError("");
+    if (next === "create") setPicks([]);
+    if (next === "search") setSearch(null);
+    if (next === "settings") setSettingsPage("team-profile");
+    setModal(next);
+  }
+  (0, import_react66.useEffect)(() => {
+    if (workspace?.command?.type === "create") {
+      showModal("create");
+      workspace.consumeCommand(workspace.command);
+    }
+  }, [workspace?.command]);
+  function fromDirectory(task) {
+    workspace?.reveal();
+    task();
+  }
+  function savePrefs(next) {
+    setPrefs(next);
+    localStorage.setItem("team:appearance", JSON.stringify(next));
+  }
+  return /* @__PURE__ */ import_react66.default.createElement("div", { className: "team-window" }, /* @__PURE__ */ import_react66.default.createElement(SidebarContacts, { workspace }, /* @__PURE__ */ import_react66.default.createElement("section", { "aria-label": "通讯录" }, /* @__PURE__ */ import_react66.default.createElement("div", { className: "bt-team-directory-header" }, /* @__PURE__ */ import_react66.default.createElement("h2", null, "通讯录"), /* @__PURE__ */ import_react66.default.createElement(
+    "button",
+    {
+      type: "button",
+      className: "bt-round",
+      title: "团队设置",
+      "aria-label": "团队设置",
+      onClick: () => fromDirectory(() => showModal("settings"))
+    },
+    /* @__PURE__ */ import_react66.default.createElement(GearIcon, null)
+  )), people.filter((person2) => person2.id !== me.id && person2.active).map((person2) => /* @__PURE__ */ import_react66.default.createElement("button", { type: "button", className: "bt-row", key: person2.id, onClick: () => fromDirectory(() => newChat(person2)) }, /* @__PURE__ */ import_react66.default.createElement(Avatar, { id: person2.id, name: person2.name, size: 25 }), /* @__PURE__ */ import_react66.default.createElement("span", { className: "bt-row-name" }, /* @__PURE__ */ import_react66.default.createElement("span", { className: "bt-row-title" }, person2.name))))), /* @__PURE__ */ import_react66.default.createElement("section", { "aria-label": "团队会话" }, /* @__PURE__ */ import_react66.default.createElement("div", { className: "bt-team-directory-header" }, /* @__PURE__ */ import_react66.default.createElement("h2", null, "团队会话"), /* @__PURE__ */ import_react66.default.createElement("div", null, /* @__PURE__ */ import_react66.default.createElement(
+    "button",
+    {
+      type: "button",
+      className: "bt-round",
+      title: "搜索消息",
+      "aria-label": "搜索消息",
+      onClick: () => fromDirectory(() => showModal("search"))
+    },
+    /* @__PURE__ */ import_react66.default.createElement(SearchIcon, null)
+  ), /* @__PURE__ */ import_react66.default.createElement(
+    "button",
+    {
+      type: "button",
+      className: "bt-round",
+      title: "新建团队群聊",
+      "aria-label": "新建团队群聊",
+      onClick: () => fromDirectory(() => showModal("create"))
+    },
+    /* @__PURE__ */ import_react66.default.createElement(PlusIcon, null)
+  ))), awaiting && /* @__PURE__ */ import_react66.default.createElement(
+    "button",
+    {
+      type: "button",
+      className: "bt-row",
+      onClick: () => fromDirectory(() => open(awaiting))
+    },
+    "个人 Agent 有一条群任务待确认"
+  ), rooms.map((room2) => /* @__PURE__ */ import_react66.default.createElement(
+    "button",
+    {
+      type: "button",
+      key: room2.id,
+      className: "bt-row",
+      "data-team-room-id": room2.id,
+      "aria-current": visible && active?.id === room2.id ? "page" : void 0,
+      onClick: () => fromDirectory(() => {
+        setModal("");
+        open(room2.id);
+      })
+    },
+    /* @__PURE__ */ import_react66.default.createElement("span", { className: "bt-row-body" }, /* @__PURE__ */ import_react66.default.createElement("span", { className: "bt-row-name" }, /* @__PURE__ */ import_react66.default.createElement("span", { className: "bt-row-title" }, room2.name)), room2.preview && /* @__PURE__ */ import_react66.default.createElement("span", { className: "bt-row-preview" }, room2.preview)),
+    room2.unread > 0 && /* @__PURE__ */ import_react66.default.createElement("span", { className: "bt-team-unread", "aria-label": room2.unread + " 条未读" }, room2.unread)
+  )))), /* @__PURE__ */ import_react66.default.createElement("main", { className: embedded ? "dsb-main team-main" : "dsb-main dsb_centerCol team-main" }, /* @__PURE__ */ import_react66.default.createElement(
+    NativeChrome,
+    {
+      rooms,
+      active,
+      people,
+      agents,
+      members,
+      runs,
+      prefs,
+      panel,
+      open,
+      showPanel: setPanel,
+      showModal,
+      personalUrl: hasPersonal,
+      embedded
+    }
+  ), awaiting && !workspace?.target && /* @__PURE__ */ import_react66.default.createElement("button", { className: "bt-soft team-personal-request", onClick: () => open(awaiting) }, "个人 Agent 有一条群任务待确认"), error && /* @__PURE__ */ import_react66.default.createElement("div", { className: "error banner", role: "alert" }, error, /* @__PURE__ */ import_react66.default.createElement("button", { onClick: () => setError(""), "aria-label": "关闭提示" }, "×")), active ? /* @__PURE__ */ import_react66.default.createElement(import_react66.default.Fragment, null, /* @__PURE__ */ import_react66.default.createElement("div", { className: "team-status", role: "status" }, !connected ? "重连中" : members.some((member) => member.kind === "agent" && !member.personal) && runnerOnline === false ? "Agent 执行器离线" : ""), /* @__PURE__ */ import_react66.default.createElement("div", { className: "dsb-chat" }, /* @__PURE__ */ import_react66.default.createElement(
+    "div",
+    {
+      className: "dsb-scroll",
+      "data-conversation-scroll": "",
+      ref: messagesEl,
+      onScroll: (e) => {
+        const t2 = e.currentTarget;
+        bottom.current = t2.scrollHeight - t2.scrollTop - t2.clientHeight < 96;
+        if (visibleRef.current && bottom.current && messages.length && document.visibilityState === "visible")
+          void api("/conversations/" + active.id + "/read", "POST", {
+            seq: messages.at(-1).seq
+          }).catch(() => {
+          });
+      }
+    },
+    /* @__PURE__ */ import_react66.default.createElement("div", { className: "dsb-column dsb-flow", "data-chat-flow": "" }, older && messages.length >= 50 && /* @__PURE__ */ import_react66.default.createElement("button", { className: "bt-soft bt-soft-sm older", onClick: () => void loadOlder() }, "加载更早消息"), !messages.length && /* @__PURE__ */ import_react66.default.createElement("div", { className: "empty" }, "发送第一条消息，开始对话。"), messages.map((m) => {
+      const run2 = runs.find((r) => r.reply_id === m.id);
+      return /* @__PURE__ */ import_react66.default.createElement(
+        "article",
+        {
+          id: "m-" + m.id,
+          className: "message " + (focusMessage === m.id ? "highlight" : ""),
+          key: m.id
+        },
+        /* @__PURE__ */ import_react66.default.createElement(NativeMessage, { message: m, mine: m.user_id === me.id }, m.quote && /* @__PURE__ */ import_react66.default.createElement("blockquote", null, m.quote), m.attachments.map((f) => /* @__PURE__ */ import_react66.default.createElement("a", { key: f.id, className: "file", href: origin + prefix + "/files/" + f.id, download: f.name }, f.media_type.startsWith("image/") && /* @__PURE__ */ import_react66.default.createElement("img", { loading: "lazy", src: origin + prefix + "/files/" + f.id, alt: f.name }), /* @__PURE__ */ import_react66.default.createElement("span", null, "↓ ", f.name))), m.status !== "complete" && /* @__PURE__ */ import_react66.default.createElement("small", { className: "run-state" }, m.status === "running" ? run2?.progress ?? "正在处理…" : m.status === "failed" ? "执行失败" : "已取消"), run2?.status === "approval" && run2.approval && /* @__PURE__ */ import_react66.default.createElement("div", { className: "approval" }, /* @__PURE__ */ import_react66.default.createElement("span", null, run2.approval.label), (run2.can_approve ?? run2.actionable) && ["allow", "deny"].map((action) => /* @__PURE__ */ import_react66.default.createElement(
+          "button",
+          {
+            key: action,
+            onClick: () => void call2(
+              () => api("/runs/" + run2.id + "/action", "POST", {
+                action,
+                approvalId: run2.approval.id
+              })
+            )
+          },
+          action === "allow" ? "允许一次" : "拒绝"
+        ))), run2?.actionable && ["running", "approval"].includes(run2.status) && /* @__PURE__ */ import_react66.default.createElement(
+          "button",
+          {
+            className: "quiet",
+            onClick: () => void call2(() => api("/runs/" + run2.id + "/action", "POST", { action: "cancel" }))
+          },
+          "停止"
+        ), /* @__PURE__ */ import_react66.default.createElement(
+          "button",
+          {
+            className: "bt-tool team-reply",
+            disabled: composerDisabled,
+            onClick: () => setDraft((d) => ({ ...d, quote: m }))
+          },
+          "引用"
+        ))
+      );
+    }), runs.filter((r) => r.status === "queued").map((run2) => /* @__PURE__ */ import_react66.default.createElement("div", { className: "run-state", key: run2.id }, "Agent 排队中", " ", run2.actionable && /* @__PURE__ */ import_react66.default.createElement(
+      "button",
+      {
+        onClick: () => void call2(() => api("/runs/" + run2.id + "/action", "POST", { action: "cancel" }))
+      },
+      "取消"
+    ))), /* @__PURE__ */ import_react66.default.createElement("div", { "data-chat-running": "" }))
+  ), /* @__PURE__ */ import_react66.default.createElement("div", { className: "dsb-composer-root" }, /* @__PURE__ */ import_react66.default.createElement(
+    "form",
+    {
+      className: "dsb-composer-wrap",
+      onSubmit: (e) => {
+        e.preventDefault();
+        void post();
+      }
+    },
+    draft.quote && /* @__PURE__ */ import_react66.default.createElement("div", { className: "quote" }, draft.quote.sender, "：", draft.quote.text.slice(0, 100), " ", /* @__PURE__ */ import_react66.default.createElement(
+      "button",
+      {
+        type: "button",
+        disabled: composerDisabled,
+        onClick: () => setDraft((d) => ({ ...d, quote: null }))
+      },
+      "×"
+    )),
+    /* @__PURE__ */ import_react66.default.createElement("div", { className: "chips" }, draft.mentions.map((m) => /* @__PURE__ */ import_react66.default.createElement(
+      "button",
+      {
+        type: "button",
+        disabled: composerDisabled,
+        key: m.id,
+        onClick: () => setDraft((d) => ({ ...d, mentions: d.mentions.filter((x) => x.id !== m.id) }))
+      },
+      "@",
+      m.name,
+      " ×"
+    )), draft.files.map((f, i) => /* @__PURE__ */ import_react66.default.createElement(
+      "button",
+      {
+        type: "button",
+        disabled: composerDisabled,
+        key: i,
+        onClick: () => setDraft((d) => ({ ...d, files: d.files.filter((_, j) => j !== i) }))
+      },
+      f.name,
+      " ×"
+    ))),
+    /* @__PURE__ */ import_react66.default.createElement("div", { className: "dsb-composer", "data-composer-card": "", "data-multiline": draft.text.includes("\n") || void 0 }, /* @__PURE__ */ import_react66.default.createElement("div", { className: "dsb-composer-tools" }, /* @__PURE__ */ import_react66.default.createElement("button", { type: "button", className: "bt-round", "aria-label": "提及", disabled: composerDisabled, onClick: () => setMentions(!mentions) }, "@"), /* @__PURE__ */ import_react66.default.createElement("label", { className: "bt-round team-upload", title: "上传文件" }, /* @__PURE__ */ import_react66.default.createElement(PlusIcon, null), /* @__PURE__ */ import_react66.default.createElement(
+      "input",
+      {
+        type: "file",
+        "aria-label": "上传文件",
+        multiple: true,
+        disabled: composerDisabled,
+        onChange: (e) => {
+          const files = Array.from(e.target.files ?? []);
+          setDraft((d) => ({ ...d, files: [...d.files, ...files].slice(0, 10) }));
+          e.target.value = "";
+        }
+      }
+    ))), /* @__PURE__ */ import_react66.default.createElement("div", { className: "dsb-composer-input", "data-input-scroll": "" }, /* @__PURE__ */ import_react66.default.createElement(
+      "textarea",
+      {
+        rows: 1,
+        "data-composer-input": "",
+        "aria-label": "输入消息",
+        placeholder: "发消息给 " + active.name,
+        value: draft.text,
+        disabled: composerDisabled,
+        onChange: (e) => {
+          const text = e.target.value;
+          setDraft((d) => ({ ...d, text }));
+          if (text.endsWith("@")) setMentions(true);
+        },
+        onKeyDown: (e) => {
+          if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
+            e.preventDefault();
+            void post();
+          }
+        }
+      }
+    )), /* @__PURE__ */ import_react66.default.createElement("div", { className: "dsb-composer-trailing" }, pending && !sending && /* @__PURE__ */ import_react66.default.createElement("button", { className: "bt-soft", type: "button", onClick: () => setPending(null) }, "编辑"), /* @__PURE__ */ import_react66.default.createElement(
+      "button",
+      {
+        className: "dsb-send",
+        "aria-label": "发送",
+        title: pending ? "重试" : "发送",
+        disabled: sending || !draft.text.trim() && !draft.files.length && !draft.mentions.length
+      },
+      /* @__PURE__ */ import_react66.default.createElement(ArrowUpIcon, null)
+    ))),
+    mentions && /* @__PURE__ */ import_react66.default.createElement("div", { className: "bt-menu mention-menu" }, mentionOptions.map((m) => /* @__PURE__ */ import_react66.default.createElement(
+      "button",
+      {
+        type: "button",
+        key: m.id,
+        onClick: () => {
+          setDraft(
+            (d) => d.mentions.some((x) => x.id === m.id) ? d : { ...d, text: d.text.replace(/@$/, ""), mentions: [...d.mentions, m] }
+          );
+          setMentions(false);
+        }
+      },
+      m.kind === "agent" ? "✦ " : "",
+      m.name
+    )))
+  )))) : embedded ? /* @__PURE__ */ import_react66.default.createElement("div", { className: "empty" }, "从左侧通讯录选择同事，或打开已有会话。") : /* @__PURE__ */ import_react66.default.createElement("div", { className: "empty welcome" }, /* @__PURE__ */ import_react66.default.createElement("h1", null, "团队消息"), /* @__PURE__ */ import_react66.default.createElement("p", null, "从通讯录发起私聊，或创建一个群聊。"), /* @__PURE__ */ import_react66.default.createElement("button", { className: "bt-soft", onClick: () => showModal("directory") }, "打开通讯录"))), panel && active && /* @__PURE__ */ import_react66.default.createElement("aside", { className: "bt-panel details" }, /* @__PURE__ */ import_react66.default.createElement("div", { className: "modal-head" }, /* @__PURE__ */ import_react66.default.createElement("h2", null, "群成员"), /* @__PURE__ */ import_react66.default.createElement("button", { onClick: () => setPanel(false) }, "×")), owner && /* @__PURE__ */ import_react66.default.createElement(
+    "form",
+    {
+      onSubmit: (e) => {
+        e.preventDefault();
+        patch({ name: new FormData(e.currentTarget).get("name") });
+      }
+    },
+    /* @__PURE__ */ import_react66.default.createElement("label", null, "群名称", /* @__PURE__ */ import_react66.default.createElement("input", { key: active.name, name: "name", defaultValue: active.name, required: true })),
+    /* @__PURE__ */ import_react66.default.createElement("button", null, "保存")
+  ), members.map((p) => /* @__PURE__ */ import_react66.default.createElement("div", { className: "person-row", key: p.id }, /* @__PURE__ */ import_react66.default.createElement(Avatar, { id: p.id, name: p.name, agent: p.kind === "agent" }), /* @__PURE__ */ import_react66.default.createElement("span", null, p.name, p.id === active.owner_id ? " · 群主" : ""), owner && p.id !== me.id && /* @__PURE__ */ import_react66.default.createElement("div", { className: "row-actions" }, p.kind === "user" && p.active && /* @__PURE__ */ import_react66.default.createElement("button", { onClick: () => patch({ owner: p.id }) }, "转让"), /* @__PURE__ */ import_react66.default.createElement(
+    "button",
+    {
+      onClick: () => patch(p.kind === "user" ? { removeUsers: [p.id] } : { removeAgents: [p.id] })
+    },
+    "移除"
+  )))), owner && /* @__PURE__ */ import_react66.default.createElement(import_react66.default.Fragment, null, /* @__PURE__ */ import_react66.default.createElement(
+    "button",
+    {
+      onClick: () => {
+        setPicks([]);
+        setModal("add");
+      }
+    },
+    "添加成员或 Agent"
+  ), /* @__PURE__ */ import_react66.default.createElement("label", { className: "check" }, /* @__PURE__ */ import_react66.default.createElement(
+    "input",
+    {
+      type: "checkbox",
+      checked: active.routing,
+      onChange: (e) => patch({ routing: e.target.checked })
+    }
+  ), "Super Agent 自动分派"))), modal === "settings" && /* @__PURE__ */ import_react66.default.createElement(
+    NativeSettings,
+    {
+      page: settingsPage,
+      setPage: setSettingsPage,
+      close: () => setModal(""),
+      profile: /* @__PURE__ */ import_react66.default.createElement(import_react66.default.Fragment, null, /* @__PURE__ */ import_react66.default.createElement("h3", null, me.name), error && /* @__PURE__ */ import_react66.default.createElement("p", { className: "bt-error", role: "alert" }, error), /* @__PURE__ */ import_react66.default.createElement("div", { className: "settings-row" }, desktop ? /* @__PURE__ */ import_react66.default.createElement("button", { onClick: desktop.settings }, "服务器地址") : /* @__PURE__ */ import_react66.default.createElement(
+        "button",
+        {
+          onClick: () => void call2(async () => {
+            if ("Notification" in window) {
+              const result = await Notification.requestPermission();
+              notificationsRef.current = result === "granted";
+              setNotifications(result === "granted");
+            }
+          })
+        },
+        notifications ? "浏览器通知已开启" : "开启浏览器通知"
+      ), /* @__PURE__ */ import_react66.default.createElement(
+        "button",
+        {
+          onClick: () => void call2(async () => {
+            await api("/logout", "POST");
+            logout();
+          })
+        },
+        "退出登录"
+      ))),
+      personal: hasPersonal && /* @__PURE__ */ import_react66.default.createElement("div", { className: "team-workspace-links" }, /* @__PURE__ */ import_react66.default.createElement("button", { type: "button", onClick: () => openPersonal() }, /* @__PURE__ */ import_react66.default.createElement(MonitorIcon, null), "打开个人工作区"), /* @__PURE__ */ import_react66.default.createElement("button", { type: "button", onClick: () => openPersonal("new-agent") }, /* @__PURE__ */ import_react66.default.createElement(PlusIcon, null), "新建个人 Agent"), /* @__PURE__ */ import_react66.default.createElement("button", { type: "button", onClick: () => openPersonal("connectors") }, /* @__PURE__ */ import_react66.default.createElement(ConnectorIcon, null), "连接器"), /* @__PURE__ */ import_react66.default.createElement("button", { type: "button", onClick: () => openPersonal("computer") }, /* @__PURE__ */ import_react66.default.createElement(MonitorIcon, null), "电脑操控"), /* @__PURE__ */ import_react66.default.createElement("button", { type: "button", onClick: () => openPersonal("capabilities") }, /* @__PURE__ */ import_react66.default.createElement(PlugIcon, null), "能力与工具")),
+      administration: me.admin ? /* @__PURE__ */ import_react66.default.createElement(import_react66.default.Fragment, null, error && /* @__PURE__ */ import_react66.default.createElement("p", { className: "bt-error", role: "alert" }, error), /* @__PURE__ */ import_react66.default.createElement(Admin, { agents: agents.filter((agent) => !agent.personal), people, reload, call: call2 })) : null,
+      look: /* @__PURE__ */ import_react66.default.createElement("div", { className: "bt-settings-form team-appearance" }, /* @__PURE__ */ import_react66.default.createElement("label", null, "主题", /* @__PURE__ */ import_react66.default.createElement("select", { "aria-label": "主题", className: "bt-select", value: prefs.theme, onChange: (e) => savePrefs({ ...prefs, theme: e.target.value }) }, Object.entries(allThemes()).map(([id, theme]) => /* @__PURE__ */ import_react66.default.createElement("option", { key: id, value: id }, theme.label)))), /* @__PURE__ */ import_react66.default.createElement("label", null, "消息布局", /* @__PURE__ */ import_react66.default.createElement("select", { "aria-label": "消息布局", className: "bt-select", value: prefs.layout, onChange: (e) => savePrefs({ ...prefs, layout: e.target.value }) }, /* @__PURE__ */ import_react66.default.createElement("option", { value: "bubble" }, "气泡"), /* @__PURE__ */ import_react66.default.createElement("option", { value: "flat" }, "平铺"))))
+    }
+  ), modal && modal !== "settings" && /* @__PURE__ */ import_react66.default.createElement(
+    Modal2,
+    {
+      title: {
+        directory: "通讯录",
+        new: "新建",
+        create: "新建群聊",
+        add: "添加成员",
+        search: "搜索消息",
+        settings: "设置"
+      }[modal] ?? "",
+      close: () => setModal("")
+    },
+    error && /* @__PURE__ */ import_react66.default.createElement("p", { className: "error", role: "alert" }, error),
+    modal === "new" && hasPersonal && /* @__PURE__ */ import_react66.default.createElement("div", { className: "team-workspace-links" }, /* @__PURE__ */ import_react66.default.createElement("button", { type: "button", onClick: () => openPersonal("new-agent") }, /* @__PURE__ */ import_react66.default.createElement(PlusIcon, null), "新建个人 Agent"), /* @__PURE__ */ import_react66.default.createElement("button", { type: "button", onClick: () => showModal("create") }, /* @__PURE__ */ import_react66.default.createElement(PeopleIcon, null), "新建群聊")),
+    modal === "directory" && /* @__PURE__ */ import_react66.default.createElement(import_react66.default.Fragment, null, /* @__PURE__ */ import_react66.default.createElement("h3", null, "同事"), memberOptions.filter((p) => p.kind === "user").map((p) => /* @__PURE__ */ import_react66.default.createElement("button", { className: "directory", key: p.id, onClick: () => newChat(p) }, /* @__PURE__ */ import_react66.default.createElement(Avatar, { id: p.id, name: p.name }), p.name)), hasPersonal && /* @__PURE__ */ import_react66.default.createElement(import_react66.default.Fragment, null, /* @__PURE__ */ import_react66.default.createElement("h3", null, "个人 Agent"), personalBots.map((bot) => /* @__PURE__ */ import_react66.default.createElement("button", { className: "directory", key: bot.id, onClick: () => openPersonal("home", bot.id) }, /* @__PURE__ */ import_react66.default.createElement(Avatar, { id: bot.id, name: bot.name, agent: true }), bot.name)), /* @__PURE__ */ import_react66.default.createElement("button", { className: "directory", onClick: () => openPersonal("new-agent") }, /* @__PURE__ */ import_react66.default.createElement(PlusIcon, null), "新建个人 Agent")), /* @__PURE__ */ import_react66.default.createElement("h3", null, "团队 Agent"), memberOptions.filter((p) => p.kind === "agent").map((p) => /* @__PURE__ */ import_react66.default.createElement("button", { className: "directory", key: p.id, onClick: () => newChat(p) }, /* @__PURE__ */ import_react66.default.createElement(Avatar, { id: p.id, name: p.name, agent: true }), /* @__PURE__ */ import_react66.default.createElement("span", null, p.name, /* @__PURE__ */ import_react66.default.createElement("small", null, p.description))))),
+    (modal === "create" || modal === "add") && /* @__PURE__ */ import_react66.default.createElement(
+      "form",
+      {
+        onSubmit: (e) => {
+          e.preventDefault();
+          const values = new FormData(e.currentTarget), users = memberOptions.filter((p) => p.kind === "user" && picks.includes(p.id)).map((p) => p.id), agents2 = memberOptions.filter((p) => p.kind === "agent" && picks.includes(p.id)).map((p) => p.id);
+          void call2(async () => {
+            for (const bot of personalBots.filter((bot2) => picks.includes("local:" + bot2.id))) {
+              const registered = await api("/personal/agents", "POST", bot);
+              agents2.push(registered.id);
+            }
+            if (modal === "create") {
+              const result = await api("/conversations", "POST", {
+                kind: "group",
+                name: values.get("name"),
+                users,
+                agents: agents2
+              });
+              await list();
+              open(result.id);
+            } else if (roomId) {
+              await api("/conversations/" + roomId, "PATCH", { addUsers: users, addAgents: agents2 });
+              await timeline(roomId);
+            }
+            setModal("");
+          });
+        }
+      },
+      modal === "create" && /* @__PURE__ */ import_react66.default.createElement("label", null, "群名称", /* @__PURE__ */ import_react66.default.createElement("input", { name: "name", required: true, maxLength: 100 })),
+      memberOptions.filter((p) => modal === "create" || !members.some((m) => m.id === p.id)).map((p) => /* @__PURE__ */ import_react66.default.createElement("label", { className: "check", key: p.id }, /* @__PURE__ */ import_react66.default.createElement(
+        "input",
+        {
+          type: "checkbox",
+          checked: picks.includes(p.id),
+          onChange: (e) => setPicks(
+            (old) => e.target.checked ? [...old, p.id] : old.filter((id) => id !== p.id)
+          )
+        }
+      ), p.kind === "agent" ? "✦ " : "", p.name)),
+      personalBots.filter((bot) => modal === "create" || !agents.some(
+        (agent) => agent.local_bot_id === bot.id && members.some((member) => member.id === agent.id)
+      )).map((bot) => {
+        const key = "local:" + bot.id;
+        return /* @__PURE__ */ import_react66.default.createElement("label", { className: "check", key }, /* @__PURE__ */ import_react66.default.createElement("input", { type: "checkbox", checked: picks.includes(key), onChange: (event) => setPicks((old) => event.target.checked ? [...old, key] : old.filter((value) => value !== key)) }), bot.name, " · 个人 Agent");
+      }),
+      /* @__PURE__ */ import_react66.default.createElement("button", { className: "primary" }, modal === "create" ? "创建" : "添加")
+    ),
+    modal === "search" && /* @__PURE__ */ import_react66.default.createElement(import_react66.default.Fragment, null, /* @__PURE__ */ import_react66.default.createElement(
+      "form",
+      {
+        className: "search-form",
+        onSubmit: (e) => {
+          e.preventDefault();
+          const query = String(new FormData(e.currentTarget).get("q") ?? "");
+          void call2(async () => setSearch(await api("/search?q=" + encodeURIComponent(query))));
+        }
+      },
+      /* @__PURE__ */ import_react66.default.createElement("input", { "aria-label": "关键词", name: "q", autoFocus: true, required: true }),
+      /* @__PURE__ */ import_react66.default.createElement("button", { className: "primary" }, "搜索")
+    ), search?.map((m) => /* @__PURE__ */ import_react66.default.createElement(
+      "button",
+      {
+        key: m.id,
+        className: "search-result",
+        onClick: () => {
+          open(m.conversation_id);
+          setFocusMessage(m.id);
+          setModal("");
+          bottom.current = false;
+          setMessages((old) => merge(old, [m]));
+        }
+      },
+      /* @__PURE__ */ import_react66.default.createElement("b", null, rooms.find((r) => r.id === m.conversation_id)?.name, " · ", m.sender),
+      /* @__PURE__ */ import_react66.default.createElement("span", null, m.text || m.attachments.map((f) => f.name).join("、"))
+    )), search?.length === 0 && /* @__PURE__ */ import_react66.default.createElement("p", null, "没有找到消息。"))
+  ));
+}
+function App({ workspace }) {
+  const { api } = useTeamApi();
+  const [me, setMe] = (0, import_react66.useState)(null), [ready, setReady] = (0, import_react66.useState)(false), [error, setError] = (0, import_react66.useState)("");
+  const load = () => void api("/me").then(setMe, (error2) => {
+    if (error2.status !== 401) setError(errorText(error2));
+  }).finally(() => setReady(true));
+  (0, import_react66.useEffect)(load, []);
+  const directoryLogin = workspace && /* @__PURE__ */ import_react66.default.createElement(SidebarContacts, { workspace }, /* @__PURE__ */ import_react66.default.createElement("section", { "aria-label": "通讯录" }, /* @__PURE__ */ import_react66.default.createElement("div", { className: "bt-team-directory-header" }, /* @__PURE__ */ import_react66.default.createElement("h2", null, "通讯录")), ready ? /* @__PURE__ */ import_react66.default.createElement("button", { type: "button", className: "bt-row", onClick: workspace.reveal }, error ? "重新连接团队" : "登录后查看同事") : /* @__PURE__ */ import_react66.default.createElement("span", { className: "bt-team-directory-header" }, "正在连接团队…")));
+  if (!ready) return /* @__PURE__ */ import_react66.default.createElement(import_react66.default.Fragment, null, directoryLogin, /* @__PURE__ */ import_react66.default.createElement("div", { className: "empty" }, "正在连接团队…"));
+  if (error)
+    return /* @__PURE__ */ import_react66.default.createElement(import_react66.default.Fragment, null, directoryLogin, /* @__PURE__ */ import_react66.default.createElement("div", { className: "empty" }, error, /* @__PURE__ */ import_react66.default.createElement(
+      "button",
+      {
+        onClick: () => {
+          setError("");
+          load();
+        }
+      },
+      "重试"
+    )));
+  if (!me || /^(#invite=|#reset=)/.test(location.hash)) return /* @__PURE__ */ import_react66.default.createElement(import_react66.default.Fragment, null, directoryLogin, /* @__PURE__ */ import_react66.default.createElement(Login, { onLogin: load }));
+  return /* @__PURE__ */ import_react66.default.createElement(
+    Chat,
+    {
+      key: me.id,
+      me,
+      workspace,
+      logout: () => {
+        setMe(null);
+        desktop?.badge(0);
+      }
+    }
+  );
+}
+function TeamApp({ origin = location.origin, workspace }) {
+  return /* @__PURE__ */ import_react66.default.createElement(TeamApiProvider, { origin }, /* @__PURE__ */ import_react66.default.createElement(App, { workspace }));
+}
+
+// src/client/team-im-panel.css
+var team_im_panel_default = ".dsb-team-pane { position: fixed; inset: var(--dsh-frame-chrome-top, 0px) 0 0 auto; z-index: 24; background: var(--bt-main); color: var(--bt-ink); display: flex; flex-direction: column; min-width: 0; }\n.dsb-team-pane:has(.bt-settings-layer) { z-index: 59; }\n.dsb-team-pane[hidden] { display: none; }\n.dsb-team-content { flex: 1; min-height: 0; position: relative; }\n.bt-team-directory { width: 100%; }\n.bt-team-directory section { margin: 6px 0 10px; }\n.bt-team-directory .bt-team-directory-header { display: flex; align-items: center; justify-content: space-between; gap: 4px; padding-inline: 8px; }\n.bt-team-directory h2 { margin: 6px 0; font-size: 12px; font-weight: 600; color: var(--bt-ink-2); }\n.bt-team-directory .bt-round { width: 26px; height: 26px; }\n.bt-team-directory .bt-round svg { width: 15px; height: 15px; }\n.bt-team-directory .bt-row { min-height: 38px; padding-block: 5px; }\n.bt-team-directory .bt-team-unread { flex: none; border-radius: 8px; padding-inline: 5px; background: var(--bt-accent); color: white; font-size: 11px; line-height: 16px; }\n.dsb-team-pane .bt-panel.details { position: absolute; z-index: 28; }\n";
+
+// ../team/web/style.css
+var style_default = "/* Team-only controls. The shell, bubbles, settings and composer use DS Bot's styles. */\n.team-window, .team-main { height: 100%; }\n.team-main { overflow: hidden; }\n.team-brand { display: flex; align-items: center; gap: 8px; }\n.team-status {\n  position: absolute;\n  top: 46px;\n  right: 16px;\n  z-index: 9;\n  font-size: 12px;\n  color: var(--bt-ink-2);\n  pointer-events: none;\n}\n.team-status:empty { display: none; }\n.empty { margin: auto; padding: 24px; text-align: center; color: var(--bt-ink-2); }\n.welcome h1 { margin: 0; color: var(--bt-ink); font-size: 20px; font-weight: 600; }\n.welcome p { margin: 8px 0 16px; }\n.login { height: 100%; display: grid; place-items: center; padding: 16px; box-sizing: border-box; }\n.login-card, .team-dialog {\n  box-sizing: border-box;\n  width: min(420px, calc(100vw - 32px));\n  background: var(--bt-main);\n  color: var(--bt-ink);\n  border: 1px solid var(--bt-line-2);\n  border-radius: 16px;\n  padding: 24px;\n  box-shadow: var(--bt-glass-shadow);\n}\n.login-card h1, .team-dialog h2, .details h2 { font-size: 17px; font-weight: 600; }\n.login-card h1 { margin: 24px 0 16px; }\n.team-dialog { max-height: min(680px, calc(100dvh - 32px)); overflow: auto; }\n.team-dialog::backdrop { background: rgba(0, 0, 0, .36); }\n.modal-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }\n.modal-head h2 { margin: 0; }\n:is(.team-dialog, .details) h3, .admin h3 { margin: 18px 0 8px; font-size: 13px; }\n:is(.login-card, .team-dialog, .details, .admin) form { display: grid; gap: 10px; margin: 12px 0; }\n:is(.login-card, .team-dialog, .details, .admin, .team-appearance) label {\n  display: grid;\n  gap: 6px;\n  color: var(--bt-ink-2);\n  font-size: 13px;\n}\n:is(.login-card, .team-dialog, .details, .admin, .invite) :is(input:not([type=checkbox]), textarea, select) {\n  width: 100%;\n  box-sizing: border-box;\n  min-height: 36px;\n  border: 1px solid var(--bt-line-2);\n  border-radius: 8px;\n  padding: 7px 10px;\n  background: var(--bt-card);\n  color: var(--bt-ink);\n  font: inherit;\n}\n:is(.login-card, .team-dialog, .details, .admin, .settings-row, .banner, .approval, .quote, .chips, .run-state) button,\nbutton.quiet {\n  border: 0;\n  border-radius: 999px;\n  padding: 6px 12px;\n  background: var(--bt-hover);\n  color: inherit;\n  font: inherit;\n  font-size: 13px;\n  cursor: pointer;\n}\n:is(.login-card, .team-dialog, .details, .admin, .settings-row, .approval, .quote, .chips, .run-state) button:hover,\nbutton.quiet:hover { background: var(--bt-active); }\n:is(.login-card, .team-dialog, .admin) button.primary { min-height: 36px; background: var(--bt-accent); color: var(--bt-accent-ink, white); }\nbutton:disabled { cursor: default; }\n.error { color: var(--bt-danger); font-size: 13px; }\n.banner {\n  position: absolute;\n  z-index: 10;\n  top: 50px;\n  left: 50%;\n  transform: translateX(-50%);\n  max-width: calc(100% - 32px);\n  background: var(--bt-card);\n  border: 1px solid var(--bt-line);\n  border-radius: 12px;\n  padding: 6px 8px 6px 12px;\n}\n.banner button { margin-left: 8px; }\n.bt-panel.details { padding: 16px; gap: 12px; overflow: auto; }\n@media (min-width: 1000px) { .team-window:has(>.details) .team-main { margin-right: 320px; } }\n@media (max-width: 480px) { .bt-panel.details { max-width: 100%; } }\n.person-row, .row-actions, .settings-row, .approval, .invite { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }\n.person-row { flex-wrap: nowrap; padding: 6px 0; }\n.person-row > span:nth-child(2) { flex: 1; min-width: 0; overflow-wrap: anywhere; }\n.admin small, .directory small { display: block; color: var(--bt-ink-2); }\n:is(.team-dialog, .details, .admin) label.check { display: flex; align-items: center; gap: 8px; }\n.team-dialog button:is(.directory, .search-result) {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  text-align: left;\n  width: 100%;\n  border-radius: 8px;\n  background: transparent;\n  padding: 7px;\n}\n.team-dialog button:is(.directory, .search-result):hover { background: var(--bt-hover); }\n.team-dialog .search-result { flex-direction: column; align-items: flex-start; overflow-wrap: anywhere; }\n.team-dialog .search-form { display: flex; }\n.team-appearance { display: grid; gap: 12px; max-width: 320px; }\n.older { align-self: center; }\n.message.highlight { border-radius: 12px; background: var(--bt-accent-soft); }\n.message blockquote { margin: 4px 0; padding: 2px 8px; border-inline-start: 2px solid currentColor; font-size: 12px; opacity: .78; overflow-wrap: anywhere; }\n.message .file { width: fit-content; display: grid; gap: 4px; color: inherit; overflow-wrap: anywhere; }\n.message .file img { display: block; max-width: min(350px, 100%); max-height: 220px; object-fit: contain; border-radius: 8px; }\n.team-group-msg .bt-group-name { gap: 4px; }\n.team-group-msg .bt-group-time, .team-group-msg .bt-group-role { color: var(--bt-ink-2); font-size: 11px; font-weight: 400; }\n.team-reply { width: auto; align-self: flex-start; padding: 0 6px; font-size: 11px; color: var(--bt-ink-2); }\n.team-urow .team-reply { color: inherit; opacity: .7; }\n.run-state { display: block; color: var(--bt-ink-2); font-size: 12px; }\n.dsb-composer-wrap { position: relative; }\n.dsb-composer-tools .bt-round { width: 28px; height: 28px; background: transparent; border: 0; }\n.dsb-composer-tools .bt-round:hover { background: var(--bt-hover); }\n.team-upload { position: relative; }\n.team-upload input { position: absolute; inset: 0; width: 100%; opacity: 0; cursor: inherit; }\n.team-upload:focus-within { outline: 2px solid var(--bt-accent); }\n.team-upload svg { width: 16px; height: 16px; }\n.quote, .chips { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; color: var(--bt-ink-2); font-size: 12px; }\n.quote, .chips:not(:empty) { margin-bottom: 6px; }\n.bt-menu.mention-menu { position: absolute; inset: auto auto calc(100% + 6px) 0; z-index: 15; max-height: 240px; overflow: auto; }\n.team-workspace-links { display: grid; gap: 4px; margin: 12px 0; max-width: 320px; }\n.team-workspace-links :is(a,button) {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  min-height: 36px;\n  padding: 6px 8px;\n  border: 0;\n  border-radius: 8px;\n  background: none;\n  color: var(--bt-ink);\n  font: inherit;\n  font-size: 13px;\n  text-decoration: none;\n  text-align: left;\n  cursor: pointer;\n}\n.team-workspace-links :is(a,button):hover { background: var(--bt-hover); }\n\n.team-personal-request { position: absolute; z-index: 14; top: 52px; right: 12px; }\n";
+
+// ../app/ui/src/app.css
+var app_default = `/* The frame around the Bot views. The views bring their own stylesheets (main.js); these
+   rules give the frame the sizes the views have in DSH. Colors come from the --bt-* variables. */
+html,body,#root{height:100%;margin:0}
+body{color-scheme:light;background:var(--bt-main);color:var(--bt-ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+body[data-ds-dark-theme]{color-scheme:dark}
+::-webkit-scrollbar{width:12px;height:12px}
+::-webkit-scrollbar-thumb{border:3px solid transparent;border-radius:12px;background:var(--bt-line-2) content-box}
+::-webkit-scrollbar-thumb:hover{background-color:var(--bt-ink-3)}
+::-webkit-scrollbar-track,::-webkit-scrollbar-corner{background:transparent}
+
+.dsb-frame{display:grid;grid-template-columns:280px minmax(0,1fr);height:100%}
+.dsb-frame[data-rail]{grid-template-columns:56px minmax(0,1fr)}
+
+/* The window has no title bar. A band along the top of the sidebar and of the conversation
+   moves the window (BAND in src/main.mjs); its first row of controls sits centered in it.
+   The system draws its window buttons over the band: at the right end on Windows and Linux
+   (--dsb-buttons-w wide), at the left end on macOS. */
+:root{--dsb-band:48px;--dsb-buttons-w:calc(100vw - env(titlebar-area-x,0px) - env(titlebar-area-width,100vw));--dsh-frame-overlay-top:calc(var(--dsb-band) + 8px)}
+.dsb-band{position:absolute;inset:0 0 auto;height:var(--dsb-band);pointer-events:none;-webkit-app-region:drag;app-region:drag}
+.dsb-frame :is(button,a,input,textarea,select,label,[role=button]),body>:not(#root){-webkit-app-region:no-drag;app-region:no-drag}
+.bt-panel .bt-drawer-top{padding-top:6px;padding-right:calc(17px + var(--dsb-buttons-w))}
+.bt-panel .bt-ptabs{padding-right:calc(6px + var(--dsb-buttons-w))}
+.bt-pane :is(.bt-to,.bt-create-head){padding-right:calc(12px + var(--dsb-buttons-w))}
+
+/* Sidebar; collapsed, a rail of marks under the brand, which expands it again. */
+.dsb-side{position:relative;display:flex;flex-direction:column;min-width:0;min-height:0;padding:0 12px 6px;background:var(--bt-sidebar);border-right:1px solid color-mix(in srgb,var(--bt-ink) 12%,transparent);box-sizing:border-box}
+.dsb-side-list{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;margin:0 -12px 0 -4px;padding-left:4px}
+.dsb-side .bt-list{overflow-x:hidden}
+.dsb-frame[data-rail] .dsb-side{padding:0 10px 6px}
+.dsb-frame[data-rail] .dsb-side-list{margin:0;padding:0;align-items:center}
+.dsb-expand{flex:none;width:36px;height:36px;margin:6px 0 12px;padding:0;border:0;border-radius:50%;background:none;display:inline-grid;place-items:center;cursor:pointer;transition:background-color .12s ease}
+html[data-mac] .dsb-frame .dsb-side{padding-top:var(--dsb-band)}
+.dsb-expand:hover{background:color-mix(in srgb,var(--bt-ink) 6%,transparent)}
+.dsb-side-foot{display:flex;align-items:center;gap:9px;padding:8px 6px 6px}
+.dsb-frame[data-rail] .dsb-side-foot{margin:0 -5px;padding:8px 0 6px}
+.dsb-settings{padding:0;border:0;background:none;border-radius:50%;cursor:pointer}
+.dsb-settings:hover .bt-you{background:color-mix(in srgb,var(--bt-ink) 9%,var(--bt-sidebar))}
+
+/* Conversation: a floating header pill over the transcript, and the composer below. */
+.dsb-main{position:relative;display:flex;flex-direction:column;min-width:0;min-height:0;background:var(--bt-main);--dsh-chat-content-width:min(960px,100%)}
+.dsb-head{position:absolute;top:0;left:0;right:0;z-index:8;display:flex;justify-content:center;padding:4px 0 0;pointer-events:none}
+.dsb-head::before{content:"";position:absolute;inset:0 0 auto;height:60px;background:linear-gradient(to bottom,var(--bt-main),color-mix(in srgb,var(--bt-main) 0%,transparent));pointer-events:none;z-index:-1}
+.dsb-head .bt-head{flex:1 1 auto;width:100%}
+.dsb-chat{display:flex;flex-direction:column;flex:1 1 auto;min-height:0}
+/* A thin gutter kept for the scrollbar, so the column does not move when one appears. */
+.dsb-scroll{flex:1 1 auto;min-height:0;overflow-y:auto;scrollbar-gutter:stable;margin-right:2px;padding:60px 11px 16px 16px}
+.dsb-scroll::-webkit-scrollbar{width:5px}
+.dsb-scroll::-webkit-scrollbar-thumb{border:0;border-radius:5px;background:var(--bt-line-2)}
+.dsb-column{max-width:min(960px,100%);margin:0 auto}
+.dsb-flow{display:flex;flex-direction:column;gap:6px}
+/* The first separator sits where DSH puts a transcript's opening time. */
+.dsb-flow>.bt-time-sep{margin:8px 0 2px}
+.dsb-flow>.bt-time-sep:first-child{margin:17px 0 6px}
+.dsb-flow>.bt-urow+.bt-astack,.dsb-flow>.bt-urow+.bt-time-sep+.bt-astack{margin-top:10px}
+.dsb-pending{display:contents}
+.dsb-pending .bt-ububble{opacity:.6}
+
+.dsb-composer-root{display:flex;flex-direction:column;align-items:center;padding:0 11px 13px 16px}
+.dsb-composer-wrap{width:100%;max-width:min(992px,100%)}
+.dsb-composer{position:relative}
+.dsb-composer[data-multiline]{border-radius:18px!important}
+.dsb-composer-tools{order:1;display:flex;flex:none;align-self:flex-end}
+.dsb-composer-input{display:flex;flex:1 1 0;min-width:0;padding:0 8px}
+.dsb-composer-input textarea{flex:1;width:100%;max-height:168px;margin:0;border:0;outline:0;resize:none;background:none;color:var(--bt-ink);font:inherit;font-size:14px;line-height:24px;overflow-y:auto}
+.dsb-composer-input textarea::placeholder{color:color-mix(in srgb,var(--bt-ink) 36%,transparent)}
+.dsb-composer-trailing{order:3;display:flex;flex:none;align-self:flex-end;align-items:center;gap:8px}
+.dsb-send{flex:none;width:28px;height:28px;padding:0;border:0;border-radius:50%;display:inline-grid;place-items:center;background:var(--bt-accent);color:var(--bt-accent-ink,#fff);cursor:pointer;transition:opacity .15s ease}
+.dsb-send:hover{opacity:.9}
+.dsb-send svg{width:14px;height:14px}
+.dsb-send:disabled{display:none}
+/* An empty composer offers voice chat where the send button goes; a group chat, dictation. */
+[data-composer-card]:has(.dsb-send:disabled) .bt-voice{display:inline-grid}
+body[data-bt-room] [data-composer-card]:has(.dsb-send:disabled) .bt-mic:not([aria-pressed=true]){background:var(--bt-accent);color:var(--bt-accent-ink,#fff)}
+.dsb-composer-error{margin:0 0 6px 4px;font-size:12px;line-height:16px;color:var(--bt-danger)}
+
+/* Markdown in the bubbles (primitives.js). */
+.md_markdown{overflow-wrap:anywhere}
+.md_markdown h1,.md_markdown h2,.md_markdown h3,.md_markdown h4,.md_markdown h5,.md_markdown h6{margin:0;font-size:inherit;font-weight:600}
+.md_markdown h1,.md_markdown h2{font-size:1.15em}
+.md_markdown a{color:var(--bt-accent);text-decoration:none}
+.md_markdown a:hover{text-decoration:underline}
+.md_markdown blockquote{margin:0;padding-left:10px;border-left:2px solid var(--bt-line-2);color:var(--bt-ink-2)}
+.md_markdown hr{border:0;border-top:1px solid var(--bt-line-2)}
+.md_markdown img{max-width:100%}
+.md_markdown code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9em}
+.md_markdown :not(pre)>code{padding:1px 5px;border-radius:6px;background:color-mix(in srgb,var(--bt-ink) 6%,transparent)}
+.md_markdown table{border-collapse:collapse;display:block;max-width:100%;overflow-x:auto}
+.md_markdown th,.md_markdown td{padding:4px 8px;border:1px solid var(--bt-line-2);text-align:left}
+.md-code{position:relative}
+.md-code pre{margin:0;padding:10px 12px;border-radius:10px;background:color-mix(in srgb,var(--bt-ink) 5%,transparent);overflow-x:auto;font-size:13px;line-height:20px}
+.md-copy{position:absolute;top:6px;right:6px;padding:2px 8px;border:0;border-radius:6px;background:var(--bt-main);color:var(--bt-ink-2);font:inherit;font-size:12px;line-height:18px;cursor:pointer;opacity:0;transition:opacity .12s ease}
+.md-code:hover .md-copy,.md-copy:focus-visible{opacity:1}
+`;
+
+// src/client/team-im-panel.js
+var import_react67 = require("react");
+var import_react_dom13 = require("react-dom");
+var executor = {
+  run: (task) => call("team-im-run", task),
+  stop: (task) => call("team-im-stop", task).catch(() => {
+  })
+};
+function TeamImPanel({ origin, open, left, roster, target, command, actions }) {
+  (0, import_react67.useEffect)(() => installCompiledStyles(
+    `@scope (.dsb-team-pane) { ${app_default} ${style_default} }` + team_im_panel_default,
+    "team-im"
+  ), []);
+  const workspace = {
+    bots: roster.bots.filter((bot) => !bot.private && !bot.hidden).map(({ id, name }) => ({ id, name })),
+    execute: executor,
+    target,
+    visible: open,
+    command,
+    reveal: actions.openTeamWorkspace,
+    consumeCommand: actions.consumeTeamDirectoryCommand,
+    open(page, botId) {
+      actions.closeTeamWorkspace();
+      if (page === "new-agent") actions.openNewChat("create");
+      else if (["connectors", "computer", "capabilities"].includes(page)) actions.openSettings(page);
+      else if (botId) actions.openSession(botId);
+    }
+  };
+  return (0, import_react67.createElement)(
+    "section",
+    { className: "dsb-team-pane", hidden: !open, style: { left }, "aria-label": t("Team messages") },
+    (0, import_react67.createElement)("div", { className: "dsb-team-content" }, (0, import_react67.createElement)(TeamApp, { origin, workspace }))
+  );
+}
+function TeamImOverlay({ useUi, useRoster, useFrame, useSidebarPref, actions }) {
+  const origin = useUi((ui2) => ui2.teamImOrigin);
+  const open = useUi((ui2) => ui2.teamImOpen === true);
+  const drawer = useUi((ui2) => ui2.leftDrawer === true);
+  const target = useUi((ui2) => ui2.teamDirectoryTarget);
+  const command = useUi((ui2) => ui2.teamDirectoryCommand);
+  const roster = useRoster((value) => value);
+  const frame = useFrame((value) => value);
+  const pref = useSidebarPref((value) => value);
+  if (!origin) return null;
+  const { column } = frameLayout({ viewport: frame.viewport, sidebarWidth: frame.sidebarWidth, pref, drawer });
+  return (0, import_react_dom13.createPortal)((0, import_react67.createElement)(TeamImPanel, { origin, open, left: column, roster, target, command, actions }), document.body);
+}
+
 // src/client/read-page.js
 var READ_LIMITS = {
   chars: 4e5,
@@ -40209,15 +41601,15 @@ function lineDiff(before, after) {
 }
 
 // src/client/learning-card.js
-var import_react63 = require("react");
+var import_react68 = require("react");
 var failedAnswers = /* @__PURE__ */ new Map();
 function ProposalCard({ proposal, initialError = "", onFailure, onResolved, actions }) {
   const outcome = proposal.outcome;
-  const [busy, setBusy] = (0, import_react63.useState)(false);
-  const [error, setError] = (0, import_react63.useState)(initialError);
-  const [open, setOpen] = (0, import_react63.useState)(false);
-  const busyRef = (0, import_react63.useRef)(false);
-  const titleId = (0, import_react63.useId)();
+  const [busy, setBusy] = (0, import_react68.useState)(false);
+  const [error, setError] = (0, import_react68.useState)(initialError);
+  const [open, setOpen] = (0, import_react68.useState)(false);
+  const busyRef = (0, import_react68.useRef)(false);
+  const titleId = (0, import_react68.useId)();
   const answer = (approve) => {
     if (busyRef.current) return;
     busyRef.current = true;
@@ -40234,68 +41626,68 @@ function ProposalCard({ proposal, initialError = "", onFailure, onResolved, acti
   };
   const update = proposal.action === "update";
   const agents = proposal.kind === "agents";
-  const rows2 = (0, import_react63.useMemo)(() => lineDiff(update ? proposal.previous?.content : "", proposal.content), [update, proposal.previous?.content, proposal.content]);
+  const rows2 = (0, import_react68.useMemo)(() => lineDiff(update ? proposal.previous?.content : "", proposal.content), [update, proposal.previous?.content, proposal.content]);
   const change = agents ? [
-    (0, import_react63.createElement)(FileBox, { key: "file", name: "AGENTS.md", path: proposal.folder, state: proposal.exists === false ? "Added" : "Modified", blocks: proposal.edits.map((edit) => [
+    (0, import_react68.createElement)(FileBox, { key: "file", name: "AGENTS.md", path: proposal.folder, state: proposal.exists === false ? "Added" : "Modified", blocks: proposal.edits.map((edit) => [
       ...(edit.op === "add" ? [] : editLines(edit.old)).map((line) => ({ kind: "removed", line })),
       ...(edit.op === "remove" ? [] : editLines(edit.text)).map((line) => ({ kind: "added", line }))
     ]) }),
-    ...proposal.edits.map((edit, index) => edit.why ? (0, import_react63.createElement)("p", { className: "bt-learning-why", key: `why-${index}` }, edit.why) : null)
+    ...proposal.edits.map((edit, index) => edit.why ? (0, import_react68.createElement)("p", { className: "bt-learning-why", key: `why-${index}` }, edit.why) : null)
   ] : [
-    (0, import_react63.createElement)(FileBox, { key: "file", name: "SKILL.md", path: `skills/${proposal.name}`, state: update ? "Updated" : "Added", blocks: [rows2] }),
-    proposal.why ? (0, import_react63.createElement)("p", { className: "bt-learning-why", key: "why" }, proposal.why) : null
+    (0, import_react68.createElement)(FileBox, { key: "file", name: "SKILL.md", path: `skills/${proposal.name}`, state: update ? "Updated" : "Added", blocks: [rows2] }),
+    proposal.why ? (0, import_react68.createElement)("p", { className: "bt-learning-why", key: "why" }, proposal.why) : null
   ];
   const kind = t(agents ? "AGENTS.md update" : update ? "Skill update" : "New skill");
   if (outcome) {
     const what = agents ? proposal.folder : proposal.name;
-    return (0, import_react63.createElement)(
+    return (0, import_react68.createElement)(
       "section",
       { className: "bt-q bt-q-settled bt-learning-card bt-learning-settled", role: "group", "aria-label": `${kind} · ${what}`, "data-outcome": outcome },
-      (0, import_react63.createElement)(
+      (0, import_react68.createElement)(
         "button",
         { type: "button", className: "bt-learning-fold", "aria-expanded": open, onClick: () => setOpen(!open) },
-        (0, import_react63.createElement)("span", { className: "bt-learning-icon", "aria-hidden": true }, (0, import_react63.createElement)(agents ? PencilIcon : MemoryIcon)),
-        (0, import_react63.createElement)("span", { className: "bt-learning-kind" }, kind),
-        (0, import_react63.createElement)("span", { className: "bt-learning-sum" }, `${t(outcome === "approved" ? "Approved" : "Declined")} · ${what}`)
+        (0, import_react68.createElement)("span", { className: "bt-learning-icon", "aria-hidden": true }, (0, import_react68.createElement)(agents ? PencilIcon : MemoryIcon)),
+        (0, import_react68.createElement)("span", { className: "bt-learning-kind" }, kind),
+        (0, import_react68.createElement)("span", { className: "bt-learning-sum" }, `${t(outcome === "approved" ? "Approved" : "Declined")} · ${what}`)
       ),
       open ? change : null
     );
   }
   const oldDetail = update && typeof proposal.previous?.description === "string" && proposal.previous.description !== proposal.description ? proposal.previous.description : void 0;
-  return (0, import_react63.createElement)(
+  return (0, import_react68.createElement)(
     "section",
     { className: "bt-q bt-learning-card", role: "group", "aria-labelledby": titleId, "aria-busy": busy },
-    agents ? (0, import_react63.createElement)(ProposalHead, { titleId, icon: PencilIcon, title: kind }) : (0, import_react63.createElement)(ProposalHead, { titleId, title: proposal.name, kind, detail: proposal.description, oldDetail }),
+    agents ? (0, import_react68.createElement)(ProposalHead, { titleId, icon: PencilIcon, title: kind }) : (0, import_react68.createElement)(ProposalHead, { titleId, title: proposal.name, kind, detail: proposal.description, oldDetail }),
     change,
-    error ? (0, import_react63.createElement)("div", { className: "bt-learning-error", role: "alert" }, error) : null,
-    (0, import_react63.createElement)(ProposalFoot, { busy, answer })
+    error ? (0, import_react68.createElement)("div", { className: "bt-learning-error", role: "alert" }, error) : null,
+    (0, import_react68.createElement)(ProposalFoot, { busy, answer })
   );
 }
 function ProposalHead({ titleId, icon: icon2 = MemoryIcon, title, kind, detail, oldDetail }) {
-  return (0, import_react63.createElement)(
+  return (0, import_react68.createElement)(
     "div",
     { className: "bt-q-head" },
-    (0, import_react63.createElement)("span", { className: "bt-learning-icon", "aria-hidden": true }, (0, import_react63.createElement)(icon2)),
-    (0, import_react63.createElement)(
+    (0, import_react68.createElement)("span", { className: "bt-learning-icon", "aria-hidden": true }, (0, import_react68.createElement)(icon2)),
+    (0, import_react68.createElement)(
       "div",
       { className: "bt-q-text" },
-      (0, import_react63.createElement)("p", { className: "bt-q-title", id: titleId }, title),
-      kind ? (0, import_react63.createElement)("div", { className: "bt-q-detail" }, kind) : null,
-      oldDetail ? (0, import_react63.createElement)("p", { className: "bt-learning-description bt-learning-old" }, (0, import_react63.createElement)("del", null, oldDetail)) : null,
-      detail ? (0, import_react63.createElement)("p", { className: "bt-learning-description" }, detail) : null
+      (0, import_react68.createElement)("p", { className: "bt-q-title", id: titleId }, title),
+      kind ? (0, import_react68.createElement)("div", { className: "bt-q-detail" }, kind) : null,
+      oldDetail ? (0, import_react68.createElement)("p", { className: "bt-learning-description bt-learning-old" }, (0, import_react68.createElement)("del", null, oldDetail)) : null,
+      detail ? (0, import_react68.createElement)("p", { className: "bt-learning-description" }, detail) : null
     ),
-    (0, import_react63.createElement)("span", { className: "bt-q-badge bt-learning-status" }, (0, import_react63.createElement)("span", { className: "bt-learning-dot", "aria-hidden": true }), t("Awaiting approval"))
+    (0, import_react68.createElement)("span", { className: "bt-q-badge bt-learning-status" }, (0, import_react68.createElement)("span", { className: "bt-learning-dot", "aria-hidden": true }), t("Awaiting approval"))
   );
 }
 function ProposalFoot({ busy, answer }) {
-  return (0, import_react63.createElement)(
+  return (0, import_react68.createElement)(
     "div",
     { className: "bt-q-foot bt-learning-foot" },
-    (0, import_react63.createElement)("button", { type: "button", className: "bt-learning-btn bt-learning-decline", disabled: busy, onClick: () => answer(false) }, t("Decline")),
-    (0, import_react63.createElement)(
+    (0, import_react68.createElement)("button", { type: "button", className: "bt-learning-btn bt-learning-decline", disabled: busy, onClick: () => answer(false) }, t("Decline")),
+    (0, import_react68.createElement)(
       "button",
       { type: "button", className: "bt-learning-btn bt-learning-approve", disabled: busy, onClick: () => answer(true) },
-      (0, import_react63.createElement)(CheckIcon),
+      (0, import_react68.createElement)(CheckIcon),
       t("Approve")
     )
   );
@@ -40303,43 +41695,43 @@ function ProposalFoot({ busy, answer }) {
 var COLLAPSE_ROWS = 8;
 var SIGNS = { added: "+", removed: "−", same: "" };
 function FileBox({ name, path: path2, state, blocks }) {
-  const [open, setOpen] = (0, import_react63.useState)(false);
+  const [open, setOpen] = (0, import_react68.useState)(false);
   const all = blocks.flat();
   const added = all.filter((row) => row.kind === "added").length;
   const removed = all.filter((row) => row.kind === "removed").length;
   const folds = all.length > COLLAPSE_ROWS;
   const shut = folds && !open;
-  return (0, import_react63.createElement)(
+  return (0, import_react68.createElement)(
     "div",
     { className: "bt-learning-file" },
-    (0, import_react63.createElement)(
+    (0, import_react68.createElement)(
       "div",
       { className: "bt-learning-filehead" },
-      (0, import_react63.createElement)("span", { className: "bt-learning-name" }, name),
-      path2 ? (0, import_react63.createElement)("span", { className: "bt-learning-path" }, path2) : null,
-      (0, import_react63.createElement)("span", { className: "bt-learning-spacer" }),
-      added > 0 ? (0, import_react63.createElement)("span", { className: "bt-learning-plus" }, `+${added}`) : null,
-      removed > 0 ? (0, import_react63.createElement)("span", { className: "bt-learning-minus" }, `−${removed}`) : null,
-      (0, import_react63.createElement)("span", { className: `bt-learning-state bt-learning-state-${state.toLowerCase()}` }, t(state))
+      (0, import_react68.createElement)("span", { className: "bt-learning-name" }, name),
+      path2 ? (0, import_react68.createElement)("span", { className: "bt-learning-path" }, path2) : null,
+      (0, import_react68.createElement)("span", { className: "bt-learning-spacer" }),
+      added > 0 ? (0, import_react68.createElement)("span", { className: "bt-learning-plus" }, `+${added}`) : null,
+      removed > 0 ? (0, import_react68.createElement)("span", { className: "bt-learning-minus" }, `−${removed}`) : null,
+      (0, import_react68.createElement)("span", { className: `bt-learning-state bt-learning-state-${state.toLowerCase()}` }, t(state))
     ),
-    (0, import_react63.createElement)(
+    (0, import_react68.createElement)(
       "div",
       { className: shut ? "bt-learning-code bt-learning-shut" : "bt-learning-code" },
       blocks.map((rows2, blockIndex) => [
-        blockIndex > 0 ? (0, import_react63.createElement)("div", { className: "bt-learning-gap", key: `gap-${blockIndex}` }) : null,
-        ...rows2.map((row, rowIndex) => (0, import_react63.createElement)(
+        blockIndex > 0 ? (0, import_react68.createElement)("div", { className: "bt-learning-gap", key: `gap-${blockIndex}` }) : null,
+        ...rows2.map((row, rowIndex) => (0, import_react68.createElement)(
           "div",
           { className: `bt-learning-row bt-learning-${row.kind}`, key: `${blockIndex}-${rowIndex}` },
-          (0, import_react63.createElement)("span", { className: "bt-learning-num", "aria-hidden": true }, row.number ?? ""),
-          (0, import_react63.createElement)("span", { className: "bt-learning-sign", "aria-hidden": true }, SIGNS[row.kind]),
-          (0, import_react63.createElement)("span", { className: "bt-learning-text" }, row.line || " ")
+          (0, import_react68.createElement)("span", { className: "bt-learning-num", "aria-hidden": true }, row.number ?? ""),
+          (0, import_react68.createElement)("span", { className: "bt-learning-sign", "aria-hidden": true }, SIGNS[row.kind]),
+          (0, import_react68.createElement)("span", { className: "bt-learning-text" }, row.line || " ")
         ))
       ])
     ),
-    folds ? (0, import_react63.createElement)(
+    folds ? (0, import_react68.createElement)(
       "div",
       { className: shut ? "bt-learning-morebar bt-learning-morebar-shut" : "bt-learning-morebar" },
-      (0, import_react63.createElement)(
+      (0, import_react68.createElement)(
         "button",
         { type: "button", className: "bt-learning-more", "aria-expanded": open, onClick: () => setOpen(!open) },
         t(open ? "Show less" : "Show all {count} lines", { count: all.length })
@@ -40350,7 +41742,7 @@ function FileBox({ name, path: path2, state, blocks }) {
 function LearningProposals({ turn, dock, sessionId, useRoster, actions }) {
   const roster = useRoster((value) => value);
   const facts = useTurnFacts(sessionId, actions);
-  const [failed, setFailed] = (0, import_react63.useState)({});
+  const [failed, setFailed] = (0, import_react68.useState)({});
   const bot = roster.byId?.[sessionId];
   if (!bot || currentPart(bot) !== sessionId) return null;
   const proposals = roster.learning?.[bot.id] ?? [];
@@ -40379,10 +41771,10 @@ function LearningProposals({ turn, dock, sessionId, useRoster, actions }) {
     delete next[id];
     return next;
   });
-  return (0, import_react63.createElement)("div", { className: dock ? "bt-learning-stack bt-learning-dock" : "bt-learning-stack" }, cards.map((proposal) => (0, import_react63.createElement)(
+  return (0, import_react68.createElement)("div", { className: dock ? "bt-learning-stack bt-learning-dock" : "bt-learning-stack" }, cards.map((proposal) => (0, import_react68.createElement)(
     "div",
     { className: "bt-q-inline", key: proposal.id },
-    (0, import_react63.createElement)(ProposalCard, {
+    (0, import_react68.createElement)(ProposalCard, {
       proposal,
       initialError: failed[proposal.id]?.error ?? failedAnswers.get(proposal.id)?.error,
       onFailure,
@@ -40392,10 +41784,10 @@ function LearningProposals({ turn, dock, sessionId, useRoster, actions }) {
   )));
 }
 function LearningTurnTail(props) {
-  return (0, import_react63.createElement)(LearningProposals, { ...props, dock: false });
+  return (0, import_react68.createElement)(LearningProposals, { ...props, dock: false });
 }
 function LearningDock(props) {
-  return (0, import_react63.createElement)(LearningProposals, { ...props, dock: true });
+  return (0, import_react68.createElement)(LearningProposals, { ...props, dock: true });
 }
 var LEARNING_CSS = `
 .bt-learning-stack{display:flex;flex-direction:column;gap:4px}
@@ -40485,7 +41877,7 @@ function createSwitchWindow(settle) {
 }
 
 // src/client/queue-dock.js
-var import_react64 = require("react");
+var import_react69 = require("react");
 var OWN_QUEUE_KINDS = /* @__PURE__ */ new Set(["user", "schedule", "user-question-reply"]);
 var EMPTY_QUEUE = [];
 var QUEUE_TEXT_FACTS = { collapseWhitespace: true, trimWhitespace: true };
@@ -40502,17 +41894,17 @@ function queueAttachments(content) {
 var fileSizeText2 = (bytes) => typeof bytes !== "number" || !Number.isFinite(bytes) ? "" : bytes < 1024 ? `${bytes} B` : bytes < 1048576 ? `${(bytes / 1024).toFixed(1)} KB` : `${(bytes / 1048576).toFixed(1)} MB`;
 function QueueFile({ attachment, label }) {
   const size = fileSizeText2(attachment.bytes);
-  return (0, import_react64.createElement)(
+  return (0, import_react69.createElement)(
     "span",
     { className: "bt-queue-file", "aria-label": label, title: attachment.name },
-    (0, import_react64.createElement)("span", { className: "bt-queue-fileicon", "aria-hidden": true }, (0, import_react64.createElement)(PaperclipIcon)),
-    (0, import_react64.createElement)("span", { className: "bt-queue-filename" }, attachment.name),
-    size !== "" ? (0, import_react64.createElement)("span", { className: "bt-queue-filesize" }, size) : null
+    (0, import_react69.createElement)("span", { className: "bt-queue-fileicon", "aria-hidden": true }, (0, import_react69.createElement)(PaperclipIcon)),
+    (0, import_react69.createElement)("span", { className: "bt-queue-filename" }, attachment.name),
+    size !== "" ? (0, import_react69.createElement)("span", { className: "bt-queue-filesize" }, size) : null
   );
 }
 function QueueThumb({ attachment, loadImage, label }) {
-  const [url, setUrl] = (0, import_react64.useState)(null);
-  (0, import_react64.useEffect)(() => {
+  const [url, setUrl] = (0, import_react69.useState)(null);
+  (0, import_react69.useEffect)(() => {
     let alive = true;
     loadImage(attachment).then((resolved) => {
       if (alive) setUrl(resolved);
@@ -40522,22 +41914,22 @@ function QueueThumb({ attachment, loadImage, label }) {
       alive = false;
     };
   }, [attachment, loadImage]);
-  return url === null ? (0, import_react64.createElement)("span", { className: "bt-queue-thumb", "aria-hidden": true }) : (0, import_react64.createElement)("img", { className: "bt-queue-thumb", src: url, alt: label });
+  return url === null ? (0, import_react69.createElement)("span", { className: "bt-queue-thumb", "aria-hidden": true }) : (0, import_react69.createElement)("img", { className: "bt-queue-thumb", src: url, alt: label });
 }
 function Preview({ text, renderFactorySlot }) {
   const rendered = renderFactorySlot?.("conversation.user.text", { text, facts: QUEUE_TEXT_FACTS, interactive: false, ellipsis: true });
-  return (0, import_react64.createElement)("span", { className: "bt-queue-preview" }, rendered ?? text);
+  return (0, import_react69.createElement)("span", { className: "bt-queue-preview" }, rendered ?? text);
 }
 function EditField({ text, onChange, onSave, onCancel }) {
-  const field = (0, import_react64.useRef)(null);
-  (0, import_react64.useEffect)(() => {
+  const field = (0, import_react69.useRef)(null);
+  (0, import_react69.useEffect)(() => {
     const node = field.current;
     if (node === null) return;
     node.focus();
     node.style.height = "auto";
     node.style.height = `${node.scrollHeight}px`;
   }, [text]);
-  return (0, import_react64.createElement)("textarea", {
+  return (0, import_react69.createElement)("textarea", {
     ref: field,
     className: "bt-queue-edit",
     value: text,
@@ -40556,28 +41948,28 @@ function EditField({ text, onChange, onSave, onCancel }) {
   });
 }
 function RowButton({ label, title, disabled, onClick, children }) {
-  return (0, import_react64.createElement)("button", { type: "button", className: "bt-queue-action", "aria-label": label, title: title ?? label, disabled, onClick }, children);
+  return (0, import_react69.createElement)("button", { type: "button", className: "bt-queue-action", "aria-label": label, title: title ?? label, disabled, onClick }, children);
 }
 function QueueDock({ useSession, useProjection, updateQueue, loadImage, renderFactorySlot, actions }) {
   const inbox = useProjection?.("inbox");
   const pendingSubmissions = useSession?.((s) => s.pendingSubmissions) ?? EMPTY_QUEUE;
-  const queue = (0, import_react64.useMemo)(() => {
+  const queue = (0, import_react69.useMemo)(() => {
     const rows2 = (inbox?.["next-turn"] ?? EMPTY_QUEUE).filter((row) => OWN_QUEUE_KINDS.has(row.source?.kind));
     const inChat = new Set(pendingSubmissions.filter((item) => item.placement === "transcript").map((item) => item.requestId));
     return inChat.size === 0 ? rows2 : rows2.filter(({ source }) => source === null || typeof source !== "object" || !("rpcId" in source) || !inChat.has(source.rpcId));
   }, [inbox, pendingSubmissions]);
-  const pendingQueue = (0, import_react64.useMemo)(() => {
+  const pendingQueue = (0, import_react69.useMemo)(() => {
     const admitted = new Set(queue.flatMap(({ source }) => source !== null && typeof source === "object" && "rpcId" in source ? [source.rpcId] : []));
     return pendingSubmissions.filter((submission) => submission.placement === "queued" && !admitted.has(submission.requestId));
   }, [pendingSubmissions, queue]);
   const rowCount = queue.length + pendingQueue.length;
   const running = useSession?.((s) => s.running) === true;
   const queueMutable = useSession?.((s) => s.subagent === null || s.subagent === void 0 || s.subagent.address?.mode === "continuable") ?? true;
-  const [editing, setEditing] = (0, import_react64.useState)(null);
-  const [busy, setBusy] = (0, import_react64.useState)(null);
-  const [collapsed, setCollapsed] = (0, import_react64.useState)(true);
-  const listId = (0, import_react64.useId)();
-  (0, import_react64.useEffect)(() => {
+  const [editing, setEditing] = (0, import_react69.useState)(null);
+  const [busy, setBusy] = (0, import_react69.useState)(null);
+  const [collapsed, setCollapsed] = (0, import_react69.useState)(true);
+  const listId = (0, import_react69.useId)();
+  (0, import_react69.useEffect)(() => {
     if (rowCount === 0 && !collapsed) setCollapsed(true);
     if (editing !== null && (!queueMutable || !queue.some((row) => row.id === editing.id))) setEditing(null);
   }, [collapsed, editing, queue, queueMutable, rowCount]);
@@ -40605,77 +41997,77 @@ function QueueDock({ useSession, useProjection, updateQueue, loadImage, renderFa
     if (editing === null || editing.text.trim() === "") return;
     if (await applyAction(editing.id, { kind: "edit", content: [{ type: "text", text: editing.text }] }, t("Couldn’t edit the queued message — it may have started already."))) setEditing(null);
   };
-  return (0, import_react64.createElement)(
+  return (0, import_react69.createElement)(
     "div",
     { className: "bt-queue-dock", "data-queue-dock": "" },
-    (0, import_react64.createElement)(
+    (0, import_react69.createElement)(
       "div",
       { className: "bt-queue-panel" },
-      rowCount > 1 && (0, import_react64.createElement)(
+      rowCount > 1 && (0, import_react69.createElement)(
         "button",
         { type: "button", className: "bt-queue-head", "aria-controls": listId, "aria-expanded": expanded, disabled: interactionActive, onClick: () => setCollapsed((value) => !value) },
-        (0, import_react64.createElement)("span", { className: "bt-queue-lead", "aria-hidden": true }, (0, import_react64.createElement)(QueueIcon)),
-        (0, import_react64.createElement)("span", { className: "bt-queue-count" }, t("{n} queued messages", { n: rowCount })),
-        !listVisible && pendingQueue.length > 0 && (0, import_react64.createElement)("span", { className: "bt-queue-status", role: "status" }, t("Sending…")),
-        (0, import_react64.createElement)("span", { className: "bt-queue-chev", "aria-hidden": true }, expanded ? (0, import_react64.createElement)(ChevronDownIcon) : (0, import_react64.createElement)(ChevronUpIcon))
+        (0, import_react69.createElement)("span", { className: "bt-queue-lead", "aria-hidden": true }, (0, import_react69.createElement)(QueueIcon)),
+        (0, import_react69.createElement)("span", { className: "bt-queue-count" }, t("{n} queued messages", { n: rowCount })),
+        !listVisible && pendingQueue.length > 0 && (0, import_react69.createElement)("span", { className: "bt-queue-status", role: "status" }, t("Sending…")),
+        (0, import_react69.createElement)("span", { className: "bt-queue-chev", "aria-hidden": true }, expanded ? (0, import_react69.createElement)(ChevronDownIcon) : (0, import_react69.createElement)(ChevronUpIcon))
       ),
-      (0, import_react64.createElement)(
+      (0, import_react69.createElement)(
         "ul",
         { id: listId, className: "bt-queue-list", hidden: !listVisible },
         listVisible && queue.map((row) => {
           const attachments = queueAttachments(row.content);
           const text = textOf(row.content);
-          return (0, import_react64.createElement)(
+          return (0, import_react69.createElement)(
             "li",
             { key: row.id, className: "bt-queue-row" },
-            rowCount === 1 && (0, import_react64.createElement)("span", { className: "bt-queue-lead", "aria-hidden": true }, (0, import_react64.createElement)(QueueIcon)),
-            editing?.id === row.id ? (0, import_react64.createElement)(EditField, { text: editing.text, onChange: (text2) => setEditing({ id: row.id, text: text2 }), onSave: saveEdit, onCancel: () => setEditing(null) }) : (0, import_react64.createElement)(
-              import_react64.Fragment,
+            rowCount === 1 && (0, import_react69.createElement)("span", { className: "bt-queue-lead", "aria-hidden": true }, (0, import_react69.createElement)(QueueIcon)),
+            editing?.id === row.id ? (0, import_react69.createElement)(EditField, { text: editing.text, onChange: (text2) => setEditing({ id: row.id, text: text2 }), onSave: saveEdit, onCancel: () => setEditing(null) }) : (0, import_react69.createElement)(
+              import_react69.Fragment,
               null,
-              attachments.length > 0 && (0, import_react64.createElement)(
+              attachments.length > 0 && (0, import_react69.createElement)(
                 "span",
                 { className: "bt-queue-attachments" },
-                attachments.map((item, index) => item.type === "image" ? (0, import_react64.createElement)(QueueThumb, { key: `${item.attachment.attachmentId}:${index}`, attachment: item.attachment, loadImage, label: t("Queued image") }) : (0, import_react64.createElement)(QueueFile, { key: `${item.attachment.attachmentId}:${item.attachment.name}:${index}`, attachment: item.attachment, label: t("Queued file {name}", { name: item.attachment.name }) }))
+                attachments.map((item, index) => item.type === "image" ? (0, import_react69.createElement)(QueueThumb, { key: `${item.attachment.attachmentId}:${index}`, attachment: item.attachment, loadImage, label: t("Queued image") }) : (0, import_react69.createElement)(QueueFile, { key: `${item.attachment.attachmentId}:${item.attachment.name}:${index}`, attachment: item.attachment, label: t("Queued file {name}", { name: item.attachment.name }) }))
               ),
-              (0, import_react64.createElement)(Preview, { text: row.content.filter((block) => block.type === "text").map((block) => block.text).join(""), renderFactorySlot })
+              (0, import_react69.createElement)(Preview, { text: row.content.filter((block) => block.type === "text").map((block) => block.text).join(""), renderFactorySlot })
             ),
-            queueMutable && (0, import_react64.createElement)(
+            queueMutable && (0, import_react69.createElement)(
               "div",
               { className: "bt-queue-actions" },
-              editing?.id === row.id ? (0, import_react64.createElement)(
-                import_react64.Fragment,
+              editing?.id === row.id ? (0, import_react69.createElement)(
+                import_react69.Fragment,
                 null,
-                (0, import_react64.createElement)(RowButton, { label: t("Save queued message"), disabled: busy !== null || editing.text.trim() === "", onClick: saveEdit }, (0, import_react64.createElement)(CheckIcon)),
-                (0, import_react64.createElement)(RowButton, { label: t("Cancel editing"), disabled: busy !== null, onClick: () => setEditing(null) }, (0, import_react64.createElement)(CloseIcon))
-              ) : (0, import_react64.createElement)(
-                import_react64.Fragment,
+                (0, import_react69.createElement)(RowButton, { label: t("Save queued message"), disabled: busy !== null || editing.text.trim() === "", onClick: saveEdit }, (0, import_react69.createElement)(CheckIcon)),
+                (0, import_react69.createElement)(RowButton, { label: t("Cancel editing"), disabled: busy !== null, onClick: () => setEditing(null) }, (0, import_react69.createElement)(CloseIcon))
+              ) : (0, import_react69.createElement)(
+                import_react69.Fragment,
                 null,
-                (0, import_react64.createElement)(RowButton, { label: t("Edit queued message"), title: text === null ? t("Contains non-text content, so editing is not supported yet") : void 0, disabled: busy !== null || text === null, onClick: () => {
+                (0, import_react69.createElement)(RowButton, { label: t("Edit queued message"), title: text === null ? t("Contains non-text content, so editing is not supported yet") : void 0, disabled: busy !== null || text === null, onClick: () => {
                   if (text !== null) setEditing({ id: row.id, text });
-                } }, (0, import_react64.createElement)(PencilIcon)),
-                (0, import_react64.createElement)(RowButton, { label: t("Delete queued message"), disabled: busy !== null, onClick: () => applyAction(row.id, { kind: "remove" }, t("Couldn’t delete the queued message — it may have started already.")) }, (0, import_react64.createElement)(TrashIcon)),
-                (0, import_react64.createElement)(RowButton, { label: t("Steer queued message"), title: running ? void 0 : t("Only while a turn is running"), disabled: busy !== null || !running, onClick: () => applyAction(row.id, { kind: "steer" }, t("Couldn’t steer the queued message. Try again.")) }, (0, import_react64.createElement)(ArrowUpIcon))
+                } }, (0, import_react69.createElement)(PencilIcon)),
+                (0, import_react69.createElement)(RowButton, { label: t("Delete queued message"), disabled: busy !== null, onClick: () => applyAction(row.id, { kind: "remove" }, t("Couldn’t delete the queued message — it may have started already.")) }, (0, import_react69.createElement)(TrashIcon)),
+                (0, import_react69.createElement)(RowButton, { label: t("Steer queued message"), title: running ? void 0 : t("Only while a turn is running"), disabled: busy !== null || !running, onClick: () => applyAction(row.id, { kind: "steer" }, t("Couldn’t steer the queued message. Try again.")) }, (0, import_react69.createElement)(ArrowUpIcon))
               )
             )
           );
         }),
-        listVisible && pendingQueue.map((submission) => (0, import_react64.createElement)(
+        listVisible && pendingQueue.map((submission) => (0, import_react69.createElement)(
           "li",
           { key: submission.requestId, className: "bt-queue-row bt-queue-pending" },
-          rowCount === 1 && (0, import_react64.createElement)("span", { className: "bt-queue-lead", "aria-hidden": true }, (0, import_react64.createElement)(QueueIcon)),
-          submission.attachments.length > 0 && (0, import_react64.createElement)(
+          rowCount === 1 && (0, import_react69.createElement)("span", { className: "bt-queue-lead", "aria-hidden": true }, (0, import_react69.createElement)(QueueIcon)),
+          submission.attachments.length > 0 && (0, import_react69.createElement)(
             "span",
             { className: "bt-queue-attachments" },
-            submission.attachments.map((attachment, index) => attachment.type === "image" ? (0, import_react64.createElement)("img", { key: `${attachment.value.previewUrl}:${index}`, className: "bt-queue-thumb", src: attachment.value.previewUrl, alt: t("Queued image") }) : (0, import_react64.createElement)(QueueFile, { key: `${attachment.value.attachmentId}:${attachment.value.name}:${index}`, attachment: attachment.value, label: t("Queued file {name}", { name: attachment.value.name }) }))
+            submission.attachments.map((attachment, index) => attachment.type === "image" ? (0, import_react69.createElement)("img", { key: `${attachment.value.previewUrl}:${index}`, className: "bt-queue-thumb", src: attachment.value.previewUrl, alt: t("Queued image") }) : (0, import_react69.createElement)(QueueFile, { key: `${attachment.value.attachmentId}:${attachment.value.name}:${index}`, attachment: attachment.value, label: t("Queued file {name}", { name: attachment.value.name }) }))
           ),
-          (0, import_react64.createElement)(Preview, { text: submission.text, renderFactorySlot }),
-          (0, import_react64.createElement)("span", { className: "bt-queue-status", role: "status" }, t("Sending…")),
-          queueMutable && (0, import_react64.createElement)(
+          (0, import_react69.createElement)(Preview, { text: submission.text, renderFactorySlot }),
+          (0, import_react69.createElement)("span", { className: "bt-queue-status", role: "status" }, t("Sending…")),
+          queueMutable && (0, import_react69.createElement)(
             "div",
             { className: "bt-queue-actions" },
-            (0, import_react64.createElement)(RowButton, { label: t("Edit queued message"), title: t("Sending…"), disabled: true }, (0, import_react64.createElement)(PencilIcon)),
-            (0, import_react64.createElement)(RowButton, { label: t("Delete queued message"), title: t("Sending…"), disabled: true }, (0, import_react64.createElement)(TrashIcon)),
-            (0, import_react64.createElement)(RowButton, { label: t("Steer queued message"), title: t("Sending…"), disabled: true }, (0, import_react64.createElement)(ArrowUpIcon))
+            (0, import_react69.createElement)(RowButton, { label: t("Edit queued message"), title: t("Sending…"), disabled: true }, (0, import_react69.createElement)(PencilIcon)),
+            (0, import_react69.createElement)(RowButton, { label: t("Delete queued message"), title: t("Sending…"), disabled: true }, (0, import_react69.createElement)(TrashIcon)),
+            (0, import_react69.createElement)(RowButton, { label: t("Steer queued message"), title: t("Sending…"), disabled: true }, (0, import_react69.createElement)(ArrowUpIcon))
           )
         ))
       )
@@ -41218,6 +42610,7 @@ function apply(ctx) {
     // or the click appears to do nothing.
     isAgentSession: (id) => isAgentSessionId(id),
     openSession: (id) => {
+      actions.closeTeamWorkspace?.();
       if (isAgentSessionId(id)) return actions.openAgentSession(id);
       ui2.set((state) => state.newChat || state.exchange || state.menu || state.palette ? { ...state, newChat: null, exchange: null, menu: null, palette: null } : state);
       setPlain(false);
@@ -41419,6 +42812,50 @@ function apply(ctx) {
       } : null
     });
   }
+  actions.closeTeamWorkspace = () => ui2.set((state) => state.teamImOpen ? { ...state, teamImOpen: false } : state);
+  actions.openTeamWorkspace = () => {
+    if (!ui2.getSnapshot().teamImOrigin) return;
+    actions.closeOverlay();
+    actions.closePanel();
+    ui2.set((state) => ({ ...state, teamImOpen: true, leftDrawer: false }));
+  };
+  actions.setTeamDirectoryTarget = (target) => {
+    ui2.set((state) => state.teamDirectoryTarget === target ? state : { ...state, teamDirectoryTarget: target });
+  };
+  actions.hasTeamDirectory = () => Boolean(ui2.getSnapshot().teamImOrigin);
+  actions.openTeamDirectory = () => {
+    actions.setSidebarPref("open");
+    actions.setLeftDrawer(true);
+  };
+  actions.openTeamGroup = () => {
+    actions.openTeamWorkspace();
+    ui2.set((state) => ({ ...state, teamDirectoryCommand: { type: "create" } }));
+  };
+  actions.consumeTeamDirectoryCommand = (command) => ui2.set((state) => state.teamDirectoryCommand === command ? { ...state, teamDirectoryCommand: null } : state);
+  ctx.effect(() => {
+    let checking = false;
+    let loaded = false;
+    let stopped = false;
+    const refresh = () => {
+      if (checking || loaded || !roster.getSnapshot().ready) return;
+      checking = true;
+      void call("team-im-info").then((info) => {
+        if (stopped) return;
+        loaded = true;
+        if (typeof info?.origin !== "string" || info.origin === location.origin) return;
+        ui2.set((state) => ({ ...state, teamImOrigin: info.origin }));
+        if (location.hash === "#team-im") actions.openTeamWorkspace();
+      }).catch(quietly("team im")).finally(() => {
+        checking = false;
+      });
+    };
+    const off = roster.subscribe(refresh);
+    refresh();
+    return () => {
+      stopped = true;
+      off();
+    };
+  }, "ds-bot: team im");
   actions.signInEntry = () => ctx.slots.entries?.("settings.models.sign-in")?.[0] ?? null;
   actions.canSignIn = () => Boolean(actions.signInEntry());
   actions.signIn = () => ui2.set((state) => ({ ...state, signIn: (state.signIn ?? 0) + 1 }));
@@ -41793,6 +43230,7 @@ function apply(ctx) {
     // Desktop's "··· More"), which comes back in Agent mode.
     () => shadow("settings.launcher", { priority: BOT_PRIORITY, inject: face }, AccountLauncher),
     () => shadow("shell.overlay", { id: "bot-computer", order: 40, inject: face }, ComputerIndicator),
+    () => shadow("shell.overlay", { id: "team-im", order: 45, inject: face }, TeamImOverlay),
     () => shadow("shell.overlay", { id: "bot", order: 50, inject: face }, Overlays),
     () => shadow("shell.overlay", { id: "bot-signin", order: 55, inject: face }, DeepSeekSignIn),
     () => shadow("shell.overlay", { id: "bot-toast", order: 60, inject: face }, ErrorToast)

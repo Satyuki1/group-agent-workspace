@@ -26,6 +26,7 @@ import { installHeaderNavigation } from './header-navigation.js'
 import { AssistantCell, TriggerCell, TurnProcessCell, Nothing, CellEmpty, TurnTailCell, ToolCell } from './cells.js'
 import { FailureCell, TURN_ERROR_CSS } from './turn-error.js'
 import { Overlays } from './overlays.js'
+import { TeamImOverlay } from './team-im-panel.js'
 import { createBotBrowsers, serveBrowserReads } from './bot-browsers.js'
 import { BROWSER_CSS } from './browser-pane.js'
 import { SECRET_CSS, SecretDock } from './secret-card.js'
@@ -488,6 +489,7 @@ export function apply(ctx) {
     // or the click appears to do nothing.
     isAgentSession: id => isAgentSessionId(id),
     openSession: (id) => {
+      actions.closeTeamWorkspace?.()
       // A DSH Agent Session id lands on the plain surface, not the Bot skin.
       if (isAgentSessionId(id)) return actions.openAgentSession(id)
       ui.set(state => (state.newChat || state.exchange || state.menu || state.palette ? { ...state, newChat: null, exchange: null, menu: null, palette: null } : state))
@@ -692,6 +694,46 @@ export function apply(ctx) {
       } : null,
     })
   }
+  actions.closeTeamWorkspace = () => ui.set(state => state.teamImOpen ? { ...state, teamImOpen: false } : state)
+  actions.openTeamWorkspace = () => {
+    if (!ui.getSnapshot().teamImOrigin) return
+    actions.closeOverlay()
+    actions.closePanel()
+    ui.set(state => ({ ...state, teamImOpen: true, leftDrawer: false }))
+  }
+  actions.setTeamDirectoryTarget = target => {
+    ui.set(state => state.teamDirectoryTarget === target ? state : { ...state, teamDirectoryTarget: target })
+  }
+  actions.hasTeamDirectory = () => Boolean(ui.getSnapshot().teamImOrigin)
+  actions.openTeamDirectory = () => {
+    actions.setSidebarPref('open')
+    actions.setLeftDrawer(true)
+  }
+  actions.openTeamGroup = () => {
+    actions.openTeamWorkspace()
+    ui.set(state => ({ ...state, teamDirectoryCommand: { type: 'create' } }))
+  }
+  actions.consumeTeamDirectoryCommand = command => ui.set(state =>
+    state.teamDirectoryCommand === command ? { ...state, teamDirectoryCommand: null } : state)
+  ctx.effect(() => {
+    let checking = false
+    let loaded = false
+    let stopped = false
+    const refresh = () => {
+      if (checking || loaded || !roster.getSnapshot().ready) return
+      checking = true
+      void call('team-im-info').then(info => {
+        if (stopped) return
+        loaded = true
+        if (typeof info?.origin !== 'string' || info.origin === location.origin) return
+        ui.set(state => ({ ...state, teamImOrigin: info.origin }))
+        if (location.hash === '#team-im') actions.openTeamWorkspace()
+      }).catch(quietly('team im')).finally(() => { checking = false })
+    }
+    const off = roster.subscribe(refresh)
+    refresh()
+    return () => { stopped = true; off() }
+  }, 'ds-bot: team im')
   // Whether AccountLauncher holds the shell's settings seat; FooterAccount steps aside if so.
   actions.signInEntry = () => ctx.slots.entries?.('settings.models.sign-in')?.[0] ?? null
   actions.canSignIn = () => Boolean(actions.signInEntry())
@@ -1090,6 +1132,7 @@ export function apply(ctx) {
     // Desktop's "··· More"), which comes back in Agent mode.
     () => shadow('settings.launcher', { priority: BOT_PRIORITY, inject: face }, AccountLauncher),
     () => shadow('shell.overlay', { id: 'bot-computer', order: 40, inject: face }, ComputerIndicator),
+    () => shadow('shell.overlay', { id: 'team-im', order: 45, inject: face }, TeamImOverlay),
     () => shadow('shell.overlay', { id: 'bot', order: 50, inject: face }, Overlays),
     () => shadow('shell.overlay', { id: 'bot-signin', order: 55, inject: face }, DeepSeekSignIn),
     () => shadow('shell.overlay', { id: 'bot-toast', order: 60, inject: face }, ErrorToast),

@@ -155,3 +155,7 @@ The plugin source is in [`ds-bot/`](ds-bot/). For options and internals, see [`d
 DS Bot is an independent community project. **It is not an official DeepSeek product**, and it is not affiliated with, endorsed by or sponsored by DeepSeek. "DeepSeek", "DeepSeek Harness" and the other names are trademarks of their owners. They are used here only to say what this plugin works with.
 
 Bots use your own model quota, and they read and write files and run commands when you ask them to. Check important actions yourself.
+
+## Team IM
+
+Open Contacts in the DS Bot Web sidebar and select a teammate to start a chat. See the [Team IM setup guide](team/README.md) to start the server and invite members.

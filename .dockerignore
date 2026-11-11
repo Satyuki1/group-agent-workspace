@@ -3,6 +3,7 @@
 ds-bot/dev/harness
 .dsh-test*
 .dsh-home
+.pnpm-store
 shots
 docs/images
 *.tgz
@@ -11,3 +12,7 @@ docker/workspace
 docker/.env
 .env
 docker-compose.override.yml
+team/dist
+team/release
+team/data
+team/.env*
